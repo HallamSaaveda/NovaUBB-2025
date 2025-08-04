@@ -1,30 +1,18 @@
-import { Router } from "express";
-import { isAdmin } from "../middlewares/authorization.middleware.js";
-import { authenticateJWT } from "../middlewares/authentication.middleware.js";
+import { Router } from "express"
+import { authenticateJWT } from "../middlewares/authentication.middleware.js"
+import { verifyRole } from "../middlewares/authorization.middleware.js"
+import { getAllUsers, getUsers, getUser, updateUser, deleteUser } from "../controllers/user.controller.js"
 
-// Importing the functions from the user controller.
-import {
-    getUsers,
-    getUser,
-    updateUser,
-    deleteUser
-} from '../controllers/user.controller.js';
+const router = Router()
 
-const router = Router(); //? It creates a new instance of the express router.
+// Todas las rutas requieren autenticación
+router.use(authenticateJWT)
 
-router
-    .use(authenticateJWT) //? It authenticates the user using JWT.
-    .use(isAdmin); //? It checks if the user is an admin.
+// Rutas de usuarios
+router.get("/all", verifyRole(["admin", "superadmin"]), getAllUsers) // ✅ Nueva ruta
+router.get("/", verifyRole(["admin", "superadmin"]), getUsers) // GET /api/users
+router.get("/detail", getUser) // GET /api/users/detail?id=1 o ?email=user@example.com
+router.patch("/detail", updateUser) // PATCH /api/users/detail?id=1
+router.delete("/detail", verifyRole(["admin", "superadmin"]), deleteUser) // DELETE /api/users/detail?id=1
 
-router
-    //! http://localhost:3000/api/user/
-    .get('/', getUsers) //? It gets all the users. - Method: HTTP GET
-    //! http://localhost:3000/api/user/detail/
-    .get('/detail/', getUser) //? It gets a user. - Method: HTTP GET
-    //! http://localhost:3000/api/user/detail/
-    .patch('/detail/', updateUser) //? It updates a user. - Method: HTTP PATCH
-    //! http://localhost:3000/api/user/detail/
-    .delete('/detail/', deleteUser); //? It deletes a user. - Method: HTTP DELETE
-
-// Exporting the routers.
-export default router;
+export default router

@@ -1,19 +1,77 @@
-/*
-Los middlewares son funciones que se ejecutan antes de que se ejecute una ruta. En este caso, el middleware de autenticación
-se encarga de verificar si el usuario está autenticado antes de permitirle acceder a una ruta protegida.
-*/
-"use strict";
-import passport from "passport"; //* Import the passport library.
+import jwt from "jsonwebtoken"
+import { AppDataSource } from "../config/configDB.js"
+import User from "../models/user.model.js"
+import { handleErrorClient } from "../handlers/responseHandlers.js"
 
-export function authenticateJWT(req, res, next) { //? Function that authenticates the user using JWT.
-    passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err) {
-            return next(err); //? If an error occurs, call the next middleware with the error.
-        }
-        if (!user) { //? If the user is not found, return an error message.
-            return res.status(401).json({message: "You do not have permission to access this resource." });
-        }
-        req.user = user; //? If the user is found, set the user in the request object.
-        next(); //? Call the next middleware.
-    })(req, res, next);
+// ✅ Solo una clave secreta
+const JWT_SECRET = process.env.ACCESS_JWT_SECRET || "your-secret-key"
+
+export async function authenticateJWT(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization
+    const token = authHeader && authHeader.split(" ")[1]
+
+    if (!token) {
+      return handleErrorClient(res, 401, "Token de acceso requerido")
+    }
+
+    // ✅ Verificar con la misma clave secreta
+    const decoded = jwt.verify(token, JWT_SECRET)
+    const userRepository = AppDataSource.getRepository(User)
+
+    const user = await userRepository.findOne({
+      where: { id: decoded.id },
+    })
+
+    if (!user) {
+      return handleErrorClient(res, 401, "Usuario no válido")
+    }
+
+    req.user = user
+    next()
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return handleErrorClient(res, 401, "Token expirado")
+    }
+    return handleErrorClient(res, 403, "Token inválido")
+  }
+}
+
+export async function optionalAuth(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization
+    const token = authHeader && authHeader.split(" ")[1]
+
+    if (token) {
+      const decoded = jwt.verify(token, JWT_SECRET)
+      const userRepository = AppDataSource.getRepository(User)
+
+      const user = await userRepository.findOne({
+        where: { id: decoded.id },
+      })
+
+      if (user) {
+        req.user = user
+      }
+    }
+
+    next()
+  } catch (error) {
+    // Si hay error en el token opcional, continúa sin usuario
+    next()
+  }
+}
+
+export function requireRole(roles) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return handleErrorClient(res, 401, "Autenticación requerida")
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return handleErrorClient(res, 403, "No tienes permisos para esta acción")
+    }
+
+    next()
+  }
 }

@@ -1,46 +1,143 @@
-import path from "path";
-import { HOST, PORT } from "../config/configEnv.js";
-import { getArchivosService, subidaArchivoService } from "../services/archivo.service.js";
 import {
-  handleErrorClient,
-  handleErrorServer,
-  handleSuccess,
-} from "../handlers/responseHandlers.js";
+  uploadArchivosService,
+  getArchivosService,
+  getArchivoService,
+  updateArchivoService,
+  deleteArchivoService,
+  downloadArchivoService,
+} from "../services/archivo.service.js"
+import { handleSuccess, handleErrorClient, handleErrorServer } from "../handlers/responseHandlers.js"
+import { archivoBodyValidation, archivoQueryValidation } from "../validations/archivo.validation.js"
 
-
-export async function subidaArchivo(req, res) {
+export async function uploadArchivo(req, res) {
   try {
-    const { nombre } = req.body;
-    let archivoPath = req.file?.path;
-
-    if (!archivoPath) {
-      return handleErrorClient(res, 400, "Archivo no subido");
+    if (!req.file && !req.files) {
+      return handleErrorClient(res, 400, "No se ha subido ningún archivo")
     }
-    // Construye la URL completa para acceder al archivo subido
-    const baseUrl = `http://${HOST}:${PORT}/api/src/upload/`;
-    // Obtiene el nombre del archivo y lo añade a la URL base
-    archivoPath = baseUrl + path.basename(archivoPath);
 
-    const [newArchivo, error] = await subidaArchivoService({ nombre, archivoPath });
+    // Validar datos del cuerpo
+    const { error } = archivoBodyValidation.validate(req.body)
+    if (error) {
+      return handleErrorClient(res, 400, error.message)
+    }
 
-    if (error) return handleErrorClient(res, 400, error);
+    const files = req.files || [req.file]
+    const archivoData = {
+      carpeta: req.body.carpeta,
+      categoria: req.body.categoria,
+      esPublico: req.body.esPublico === "true",
+      descripcion: req.body.descripcion,
+      cursoId: req.body.cursoId ? Number.parseInt(req.body.cursoId) : null,
+      investigacionId: req.body.investigacionId ? Number.parseInt(req.body.investigacionId) : null,
+    }
 
-    handleSuccess(res, 201, "Archivo subido", newArchivo);
+    const [archivos, errorArchivos] = await uploadArchivosService(files, archivoData, req.user.id)
+
+    if (errorArchivos) {
+      return handleErrorServer(res, 500, errorArchivos)
+    }
+
+    handleSuccess(res, 201, "Archivo(s) subido(s) exitosamente", archivos)
   } catch (error) {
-    handleErrorServer(res, 500, "Error subiendo archivo", error.message);
+    handleErrorServer(res, 500, "Error interno del servidor", error.message)
   }
 }
 
 export async function getArchivos(req, res) {
   try {
-    // Llama al service para obtener todos los archivos desde la base de datos
-    const [archivos, error] = await getArchivosService();
-    if (error) return handleErrorClient(res, 404, error);
+    const { error } = archivoQueryValidation.validate(req.query)
+    if (error) {
+      return handleErrorClient(res, 400, error.message)
+    }
 
-    archivos.length === 0
-      ? handleSuccess(res, 200)
-      : handleSuccess(res, 200, "Archivos encontrados", archivos);
+    const [archivos, errorArchivos] = await getArchivosService(req.query, req.user.id, req.user.role)
+
+    if (errorArchivos) {
+      return handleErrorServer(res, 500, errorArchivos)
+    }
+
+    handleSuccess(res, 200, "Archivos obtenidos exitosamente", archivos)
   } catch (error) {
-    handleErrorServer(res, 500, "Error obteniendo archivos", error.message);
+    handleErrorServer(res, 500, "Error interno del servidor", error.message)
+  }
+}
+
+export async function getArchivo(req, res) {
+  try {
+    const { id } = req.params
+
+    if (!id || isNaN(Number.parseInt(id))) {
+      return handleErrorClient(res, 400, "ID de archivo inválido")
+    }
+
+    const [archivo, errorArchivo] = await getArchivoService(id, req.user.id, req.user.role)
+
+    if (errorArchivo) {
+      return handleErrorClient(res, 404, errorArchivo)
+    }
+
+    handleSuccess(res, 200, "Archivo obtenido exitosamente", archivo)
+  } catch (error) {
+    handleErrorServer(res, 500, "Error interno del servidor", error.message)
+  }
+}
+
+export async function updateArchivo(req, res) {
+  try {
+    const { id } = req.params
+
+    if (!id || isNaN(Number.parseInt(id))) {
+      return handleErrorClient(res, 400, "ID de archivo inválido")
+    }
+
+    const [archivo, errorArchivo] = await updateArchivoService(id, req.body, req.user.id, req.user.role)
+
+    if (errorArchivo) {
+      return handleErrorClient(res, 403, errorArchivo)
+    }
+
+    handleSuccess(res, 200, "Archivo actualizado exitosamente", archivo)
+  } catch (error) {
+    handleErrorServer(res, 500, "Error interno del servidor", error.message)
+  }
+}
+
+export async function deleteArchivo(req, res) {
+  try {
+    const { id } = req.params
+
+    if (!id || isNaN(Number.parseInt(id))) {
+      return handleErrorClient(res, 400, "ID de archivo inválido")
+    }
+
+    const [archivo, errorArchivo] = await deleteArchivoService(id, req.user.id, req.user.role)
+
+    if (errorArchivo) {
+      return handleErrorClient(res, 403, errorArchivo)
+    }
+
+    handleSuccess(res, 200, "Archivo eliminado exitosamente", archivo)
+  } catch (error) {
+    handleErrorServer(res, 500, "Error interno del servidor", error.message)
+  }
+}
+
+export async function downloadArchivo(req, res) {
+  try {
+    const { id } = req.params
+
+    if (!id || isNaN(Number.parseInt(id))) {
+      return handleErrorClient(res, 400, "ID de archivo inválido")
+    }
+
+    const [archivo, errorArchivo] = await downloadArchivoService(id, req.user.id, req.user.role)
+
+    if (errorArchivo) {
+      return handleErrorClient(res, 404, errorArchivo)
+    }
+
+    res.download(archivo.ruta, archivo.nombreOriginal)
+  } catch (error) {
+    handleErrorServer(res, 500, "Error interno del servidor", error.message)
   }
 }

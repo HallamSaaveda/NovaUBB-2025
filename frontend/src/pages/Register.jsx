@@ -1,107 +1,111 @@
-import { useNavigate } from 'react-router-dom';
-import { register } from '@services/auth.service.js';
-import Form from "@components/Form";
-import useRegister from '@hooks/auth/useRegister.jsx';
-import { showErrorAlert, showSuccessAlert } from '@helpers/sweetAlert.js';
-import '@styles/form.css';
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 const Register = () => {
-	const navigate = useNavigate();
-	const {
-        errorEmail,
-        errorRut,
-        errorData,
-        handleInputChange
-    } = useRegister();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    rut: "",
+  })
+  const [loading, setLoading] = useState(false)
+  const { register } = useAuth()
+  const navigate = useNavigate()
 
-const registerSubmit = async (data) => {
-    try {
-        const response = await register(data);
-        if (response.status === 'Success') {
-            showSuccessAlert('¡Registrado!','Usuario registrado exitosamente.');
-            setTimeout(() => {
-                navigate('/auth');
-            }, 3000)
-        } else if (response.status === 'Client error') {
-            errorData(response.details);
-        }
-    } catch (error) {
-        console.error("Error al registrar un usuario: ", error);
-        showErrorAlert('Cancelado', 'Ocurrió un error al registrarse.');
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+
+    const result = await register(formData)
+
+    if (result.success) {
+      setTimeout(() => {
+        navigate("/login")
+      }, 2000)
     }
+
+    setLoading(false)
+  }
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card card">
+        <div className="auth-welcome">
+          <h2>Iniciar Sesión</h2>
+          <p></p>
+          <Link to="/login" className="btn btn-secondary">
+            Login
+          </Link>
+        </div>
+
+        <div className="auth-form">
+          <h1 className="auth-title">Registro</h1>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Nombre Completo</label>
+              <input
+                type="text"
+                name="name"
+                className="form-input"
+                placeholder="Juan Pérez González"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Email Institucional</label>
+              <input
+                type="email"
+                name="email"
+                className="form-input"
+                placeholder="juan.perez@ubiobio.cl"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <small style={{ color: "var(--text-light)", fontSize: "12px" }}>
+                Usa tu email @ubiobio.cl o @alumnos.ubiobio.cl
+              </small>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">RUT</label>
+              <input
+                type="text"
+                name="rut"
+                className="form-input"
+                placeholder="12.345.678-9"
+                value={formData.rut}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary" style={{ width: "100%" }} disabled={loading}>
+              {loading ? "Registrando..." : "Registrarse"}
+            </button>
+          </form>
+
+          <div style={{ textAlign: "center", marginTop: "16px" }}>
+            <small style={{ color: "var(--text-light)" }}>
+              Recibirás tu contraseña temporal por correo electrónico
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-const patternRut = new RegExp(/^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/)
-
-	return (
-		<main className="container">
-			<Form
-				title="Crea tu cuenta"
-				fields={[
-					{
-						label: "Nombre completo",
-						name: "nombreCompleto",
-						placeholder: "Diego Alexis Salazar Jara",
-                        fieldType: 'input',
-						type: "text",
-						required: true,
-						minLength: 15,
-						maxLength: 50,
-                        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-						patternMessage: "Debe contener solo letras y espacios",
-					},
-                    {
-                        label: "Correo electrónico",
-                        name: "email",
-                        placeholder: "example@gmail.cl",
-                        fieldType: 'input',
-                        type: "email",
-                        required: true,
-                        minLength: 15,
-                        maxLength: 35,
-                        errorMessageData: errorEmail,
-                        validate: {
-                            emailDomain: (value) => value.endsWith('@gmail.cl') || 'El correo debe terminar en @gmail.cl'
-                        },
-                        onChange: (e) => handleInputChange('email', e.target.value)
-                    },
-                    {
-						label: "Rut",
-                        name: "rut",
-                        placeholder: "23.770.330-1",
-                        fieldType: 'input',
-                        type: "text",
-						minLength: 9,
-						maxLength: 12,
-						pattern: patternRut,
-						patternMessage: "Debe ser xx.xxx.xxx-x o xxxxxxxx-x",
-						required: true,
-                        errorMessageData: errorRut,
-                        onChange: (e) => handleInputChange('rut', e.target.value)
-                    },
-                    {
-                        label: "Contraseña",
-                        name: "password",
-                        placeholder: "**********",
-                        fieldType: 'input',
-                        type: "password",
-                        required: true,
-                        minLength: 8,
-                        maxLength: 26,
-                        pattern: /^[a-zA-Z0-9]+$/,
-                        patternMessage: "Debe contener solo letras y números",
-                    },
-				]}
-				buttonText="Registrarse"
-				onSubmit={registerSubmit}
-				footerContent={
-					<p>
-						¿Ya tienes cuenta?, <a href="/auth">¡Inicia sesión aquí!</a>
-					</p>
-				}
-			/>
-		</main>
-	);
-};
-
-export default Register;
+export default Register

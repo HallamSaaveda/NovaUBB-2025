@@ -1,76 +1,112 @@
-import { useNavigate } from 'react-router-dom';
-import { login } from '@services/auth.service.js';
-import Form from '@components/Form';
-import useLogin from '@hooks/auth/useLogin.jsx';
-import '@styles/form.css';
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 const Login = () => {
-    const navigate = useNavigate();
-    const {
-        errorEmail,
-        errorPassword,
-        errorData,
-        handleInputChange
-    } = useLogin();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  })
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
-    const loginSubmit = async (data) => {
-        try {
-            const response = await login(data);
-            if (response.status === 'Success') {
-                navigate('/home');
-            } else if (response.status === 'Client error') {
-                errorData(response.details);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }))
+  }
 
-    return (
-        <main className="container">
-            <Form
-                title="Iniciar sesión"
-                fields={[
-                    {
-                        label: "Correo electrónico",
-                        name: "email",
-                        placeholder: "example@gmail.cl",
-                        fieldType: 'input',
-                        type: "email",
-                        required: true,
-                        minLength: 15,
-                        maxLength: 30,
-                        errorMessageData: errorEmail,
-                        validate: {
-                            emailDomain: (value) => value.endsWith('@gmail.cl') || 'El correo debe terminar en @gmail.cl'
-                        },
-                        onChange: (e) => handleInputChange('email', e.target.value),
-                    },
-                    {
-                        label: "Contraseña",
-                        name: "password",
-                        placeholder: "**********",
-                        fieldType: 'input',
-                        type: "password",
-                        required: true,
-                        minLength: 8,
-                        maxLength: 26,
-                        pattern: /^[a-zA-Z0-9]+$/,
-                        patternMessage: "Debe contener solo letras y números",
-                        errorMessageData: errorPassword,
-                        onChange: (e) => handleInputChange('password', e.target.value)
-                    },
-                ]}
-                buttonText="Iniciar sesión"
-                onSubmit={loginSubmit}
-                footerContent={
-                    <p>
-                        ¿No tienes cuenta?, <a href="/register">¡Regístrate aquí!</a>
-                    </p>
-                }
-            />
-        </main>
-    );
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
 
-export default Login;
+    const result = await login({
+      email: formData.email,
+      password: formData.password,
+    })
+
+    if (result.success) {
+      navigate("/")
+    }
+
+    setLoading(false)
+  }
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card card">
+        <div className="auth-form">
+          <h1 className="auth-title">Ingresar</h1>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                className="form-input"
+                placeholder="tu.email@ubiobio.cl"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Contraseña</label>
+              <input
+                type="password"
+                name="password"
+                className="form-input"
+                placeholder="Tu contraseña"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-checkbox">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                id="rememberMe"
+                checked={formData.rememberMe}
+                onChange={handleChange}
+              />
+              <label htmlFor="rememberMe">Recuerdame</label>
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ width: "100%", marginBottom: "16px" }}
+              disabled={loading}
+            >
+              {loading ? "Iniciando sesión..." : "Ingresar"}
+            </button>
+          </form>
+
+          <div style={{ textAlign: "center" }}>
+            <Link to="/forgot-password" style={{ color: "var(--text-light)", fontSize: "14px" }}>
+              Recuperar Constraseña
+            </Link>
+          </div>
+        </div>
+
+        <div className="auth-welcome">
+          <h2>Bienvenido</h2>
+          <p>No tienes una cuenta?</p>
+          <Link to="/register" className="btn btn-secondary">
+            Registrarse
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Login

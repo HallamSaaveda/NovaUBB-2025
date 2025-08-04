@@ -1,161 +1,131 @@
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from '@pages/Login';
-import Home from '@pages/Home';
-import Users from '@pages/Users';
-import Register from '@pages/Register';
-import Error404 from '@pages/Error404';
-import Root from '@pages/Root';
-import Resources from './pages/Resources';
-import Horario from '@pages/Horario';
-import Period from '@pages/Period';
-import Rooms from '@pages/Rooms';
-import Reservations from '@pages/Reservations';
+"use client"
 
-//import ProtectedRoute from '@components/ProtectedRoute';
+import React from "react"
+import ReactDOM from "react-dom/client"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { AuthProvider } from "./context/AuthContext.jsx"
+import { useAuth } from "./context/AuthContext.jsx"
+import Navigation from "./components/Navigation.jsx"
+import AlertContainer from "./components/Alert.jsx"
+import Home from "./pages/Home.jsx"
+import Login from "./pages/Login.jsx"
+import Register from "./pages/Register.jsx"
+import UserManagement from "./pages/UserManagement.jsx"
+import PersonalArea from "./pages/PersonalArea.jsx"
+import Investigaciones from "./pages/Investigaciones.jsx"
+import InvestigacionDetalle from "./pages/InvestigacionDetalle.jsx"
+import "./styles/global.css"
 
-//import Hallam
-import ProtectedRoute from '@components/ProtectedRoute';
-import '@styles/styles.css';
-//import Hallam
-import Foro from '@pages/foro/Foro';
-import News from '@pages/News';
-import NewsId from '@pages/News.id'
-import ForoDetail from './pages/foro/ForoId';
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth()
 
-import Cursos from '@pages/Cursos';
-import Subjects from './pages/Subjects';
-import Calificar from './pages/Calificar';
+  if (loading) return <div className="loading">Cargando...</div>
+  if (!user) return <Navigate to="/login" replace />
+  return children
+}
 
-// Configuración de rutas con ProtectedRoute
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Root />,
-    errorElement: <Error404 />,
-    children: [
-      // Ruta de Home: Todos pueden acceder
-      {
-        path: '/home',
-        element: <News />
-      },
-      {
-        path: '/home/news/:id', //Ruta para las Noticias por Id
-        element: <NewsId />
-      },
-      // Rutas protegidas solo para admin
-      {
-        path: '/users',
-        element: (
-          <ProtectedRoute allowedRoles={['admin']}>
-            <Users />
-          </ProtectedRoute>
-        ),
+function AdminRoute({ children }) {
+  const { user, loading } = useAuth()
 
-      },
-      {
-        path: '/horario',
-        element: <Horario />
-      },
-      {
-        path: '/period',
-        element: <Period />
-      },
-      {
+  if (loading) return <div className="loading">Cargando...</div>
+  if (!user) return <Navigate to="/login" replace />
+  if (!["admin", "superadmin"].includes(user.role)) return <Navigate to="/" replace />
+  return children
+}
 
-      },
+function ProfessorRoute({ children }) {
+  const { user, loading } = useAuth()
 
-      // Recursos: Encargados y admin pueden ver, crear y modificar (sólo admin puede eliminar sala)
-      {
+  if (loading) return <div className="loading">Cargando...</div>
+  if (!user) return <Navigate to="/login" replace />
+  if (!["profesor", "admin", "superadmin"].includes(user.role)) return <Navigate to="/" replace />
+  return children
+}
 
-        path: '/resources',
-        element: (
-          <ProtectedRoute allowedRoles={['Encargado', 'admin']}>
-            <Resources />
-          </ProtectedRoute>
-        ),
-      },
-      // Recursos (solo lectura para profesores y alumnos)
-      {
-        path: '/resources/view',
-        element: (
-          <ProtectedRoute allowedRoles={['Profesor', 'Alumno']}>
-            <Resources />
-          </ProtectedRoute>
-        ),
-      },
-      // Salas: Encargados y admin pueden ver y modificar (sólo admin puede crear y eliminar sala)
-      {
-        path: '/rooms',
-        element: (
-          <ProtectedRoute allowedRoles={['Encargado', 'admin']}>
-            <Rooms />
-          </ProtectedRoute>
-        ),
-      },
-      // Salas (solo lectura para profesores y alumnos)
-      {
-        path: '/rooms/view',
-        element: (
-          <ProtectedRoute allowedRoles={['Profesor', 'Alumno']}>
-            <Rooms />
-          </ProtectedRoute>
-        ),
-      },
-      // Reservaciones: Acceso para admin (CRUD) y Encargado (RU)
-      {
-        path: '/reservations',
-        element: (
-          <ProtectedRoute allowedRoles={['Encargado', 'admin']}>
-            <Reservations />
-          </ProtectedRoute>
-        ),
-      },
-      // Reservaciones (Profesores y alumnos solo creación y lectura)
-      {
-        path: '/reservations/my',
-        element: (
-          <ProtectedRoute allowedRoles={['Profesor', 'Alumno']}>
-            <Reservations />
-          </ProtectedRoute>
-        ),
-      },
-      // Otras rutas
-      {
-        path: '/cursos',
-        element: <Cursos />
-      },
-      {
-        path: '/subjects',
-        element: <Subjects />
-      },
-      //foro paginas
-      {
-        path: '/foro',
-        element: <Foro />,
-      },
-      {
-        path: '/foro/:id',
-        element: <ForoDetail />,
-      },
+function PublicRoute({ children }) {
+  const { user, loading } = useAuth()
 
-      {
-        path: '/calificar',
-        element: <Calificar />
-      },
-    ]
-  },
-  {
-    path: '/auth',
-    element: <Login />
-  },
-  {
-    path: '/register',
-    element: <Register />
-  }
-]);
+  if (loading) return <div className="loading">Cargando...</div>
+  if (user) return <Navigate to="/" replace />
+  return children
+}
 
-// Renderización de la aplicación con RouterProvider
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
-);
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <Navigation />
+          <AlertContainer />
+          <main className="main-content">
+            <Routes>
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <Login />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <PublicRoute>
+                    <Register />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/users"
+                element={
+                  <AdminRoute>
+                    <UserManagement />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/personal"
+                element={
+                  <ProfessorRoute>
+                    <PersonalArea />
+                  </ProfessorRoute>
+                }
+              />
+              <Route
+                path="/investigaciones"
+                element={
+                  <ProtectedRoute>
+                    <Investigaciones />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/investigaciones/:id"
+                element={
+                  <ProtectedRoute>
+                    <InvestigacionDetalle />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </AuthProvider>
+  )
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
