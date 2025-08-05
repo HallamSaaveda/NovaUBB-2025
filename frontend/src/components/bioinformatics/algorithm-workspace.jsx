@@ -1,6 +1,9 @@
+"use client"
+
 import { useState } from "react"
 import styles from "../../styles/algorithm-workspace.module.css"
 import bioinformaticsStyles from "../../styles/bioinformatics.module.css"
+import VertexCoverPage from "../../pages/vertexCoverPage"
 
 // Componentes de algoritmos (por ahora con lorem ipsum)
 const AlgorithmComponents = {
@@ -50,20 +53,7 @@ const AlgorithmComponents = {
       </div>
     </div>
   ),
-  "vertex-cover": () => (
-    <div className={styles.algorithmContent}>
-      <h3>Vertex Cover</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus
-        et malesuada fames ac turpis egestas.
-      </p>
-      <div className={styles.inputSection}>
-        <label>Grafo (matriz de adyacencia):</label>
-        <textarea placeholder="1,0,1&#10;0,1,0&#10;1,0,1" rows={4}></textarea>
-        <button className={styles.executeBtn}>Encontrar Vertex Cover</button>
-      </div>
-    </div>
-  ),
+  "vertex-cover": () => <VertexCoverPage />,
   arboles: () => (
     <div className={styles.algorithmContent}>
       <h3>Árboles Jerárquicos</h3>
