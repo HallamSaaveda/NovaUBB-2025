@@ -32,7 +32,7 @@ const algorithms = [
     key: "busqueda-permutacion",
     title: "Búsqueda de Permutación",
     description: "Algoritmo para encontrar una secuencia objetivo mediante permutaciones.",
-    category: "Búsqueda",
+    category: "Combinatoria",
     difficulty: "Intermedio",
     icon: "🔍",
     color: "#10B981",
@@ -54,7 +54,7 @@ const algorithms = [
     key: "arboles",
     title: "Árboles Jerárquicos",
     description: "Algoritmos para generar árboles ultramétricos y aditivos a partir de matrices de distancia.",
-    category: "Evolución",
+    category: "Grafos",
     difficulty: "Avanzado",
     icon: "🌳",
     color: "#EF4444",
@@ -112,7 +112,7 @@ export default function AlgoritmosPage() {
               <button className={`${styles.filterBtn} ${styles.active}`}>Todos</button>
               <button className={styles.filterBtn}>Alineamiento</button>
               <button className={styles.filterBtn}>Estructura</button>
-              <button className={styles.filterBtn}>Evolución</button>
+              <button className={styles.filterBtn}>Combinatoria</button>
               <button className={styles.filterBtn}>Grafos</button>
             </div>
 
