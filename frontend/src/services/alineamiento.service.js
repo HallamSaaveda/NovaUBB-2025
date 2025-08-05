@@ -6,7 +6,7 @@ export const alineamientoService = {
       const response = await axiosInstance.post("/alineamiento", data)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Error al ejecutar el alineamiento")
+      throw new Error(error.response?.data?.details || "Error al ejecutar el alineamiento")
     }
   }
 } 

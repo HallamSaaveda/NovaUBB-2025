@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { permutacionesService } from "../services/permutaciones.service";
 import styles from "../styles/permutaciones-page.module.css";

@@ -1,8 +1,7 @@
-"use client"
-import { useState, useEffect } from "react"
-import { alineamientoService } from "../services/alineamiento.service"
-import styles from "../styles/alineamiento-page.module.css"
-import bioinformaticsStyles from "../styles/bioinformatics.module.css"
+import { useState, useEffect } from "react";
+import { alineamientoService } from "../services/alineamiento.service";
+import styles from "../styles/alineamiento-page.module.css";
+import bioinformaticsStyles from "../styles/bioinformatics.module.css";
 
 const AlineamientoPage = ({ onBack }) => {
   const [formData, setFormData] = useState({
@@ -13,55 +12,57 @@ const AlineamientoPage = ({ onBack }) => {
     match: 1,
     mismatch: -1,
     gap: -1,
-  })
-  const [result, setResult] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [playSpeed, setPlaySpeed] = useState(1000) // ms
-  const [showTraceback, setShowTraceback] = useState(false)
+  });
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playSpeed, setPlaySpeed] = useState(1000); // ms
+  const [showTraceback, setShowTraceback] = useState(false);
 
   useEffect(() => {
-    let interval
+    let interval;
     if (isPlaying && result && currentStep < result.matrix_steps.length - 1) {
       interval = setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= result.matrix_steps.length - 1) {
-            setIsPlaying(false)
-            return prev
+            setIsPlaying(false);
+            return prev;
           }
-          return prev + 1
-        })
-      }, playSpeed)
+          return prev + 1;
+        });
+      }, playSpeed);
     }
-    return () => clearInterval(interval)
-  }, [isPlaying, currentStep, result, playSpeed])
+    return () => clearInterval(interval);
+  }, [isPlaying, currentStep, result, playSpeed]);
 
   const handleInputChange = (e) => {
-    const { name, value, type } = e.target
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === "number" ? Number.parseFloat(value) : value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-    setResult(null)
-    setCurrentStep(0)
-    setIsPlaying(false)
-    setShowTraceback(false)
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setResult(null);
+    setCurrentStep(0);
+    setIsPlaying(false);
+    setShowTraceback(false);
 
     try {
       // Validaciones básicas
       if (!formData.seq1.trim() || !formData.seq2.trim()) {
-        throw new Error("Las secuencias no pueden estar vacías")
+        throw new Error("Las secuencias no pueden estar vacías");
       }
       if (formData.seq1.length > 20 || formData.seq2.length > 20) {
-        throw new Error("Las secuencias no pueden tener más de 20 caracteres para mejor visualización")
+        throw new Error(
+          "Las secuencias no pueden tener más de 20 caracteres para mejor visualización"
+        );
       }
 
       const dataToSend = {
@@ -72,77 +73,81 @@ const AlineamientoPage = ({ onBack }) => {
         match: formData.match,
         mismatch: formData.mismatch,
         gap: formData.gap,
-      }
+      };
 
-      console.log("Datos enviados al backend:", dataToSend)
+      console.log("Datos enviados al backend:", dataToSend);
 
-      const response = await alineamientoService.ejecutarAlineamiento(dataToSend)
-      setResult(response.data)
+      const response = await alineamientoService.ejecutarAlineamiento(
+        dataToSend
+      );
+      setResult(response.data);
 
-      console.log("Traceback path recibido:", response.data.traceback_path)
+      console.log("Traceback path recibido:", response.data.traceback_path);
     } catch (err) {
-      setError(err.message || "Error al ejecutar el alineamiento")
+      setError(err.message || "Error al ejecutar el alineamiento");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getDirectionArrow = (from) => {
     switch (from) {
       case "diagonal":
-        return "↖"
+        return "↖";
       case "up":
-        return "↑"
+        return "↑";
       case "left":
-        return "←"
+        return "←";
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   const getDirectionColor = (from) => {
     switch (from) {
       case "diagonal":
-        return "#10b981" // Verde
+        return "#10b981"; // Verde
       case "up":
-        return "#3b82f6" // Azul
+        return "#3b82f6"; // Azul
       case "left":
-        return "#f59e0b" // Amarillo
+        return "#f59e0b"; // Amarillo
       default:
-        return "#6b7280" // Gris
+        return "#6b7280"; // Gris
     }
-  }
+  };
 
   const isInTraceback = (row, col) => {
-    if (!result?.traceback_path || !showTraceback) return false
-    return result.traceback_path.some((cell) => cell.row === row && cell.col === col)
-  }
+    if (!result?.traceback_path || !showTraceback) return false;
+    return result.traceback_path.some(
+      (cell) => cell.row === row && cell.col === col
+    );
+  };
 
   const nextStep = () => {
     if (result && currentStep < result.matrix_steps.length - 1) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   const prevStep = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     }
-  }
+  };
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying)
-  }
+    setIsPlaying(!isPlaying);
+  };
 
   const resetAnimation = () => {
-    setCurrentStep(0)
-    setIsPlaying(false)
-  }
+    setCurrentStep(0);
+    setIsPlaying(false);
+  };
 
   const goToStep = (step) => {
-    setCurrentStep(step)
-    setIsPlaying(false)
-  }
+    setCurrentStep(step);
+    setIsPlaying(false);
+  };
 
   return (
     <div className={bioinformaticsStyles.bioinformaticsSection}>
@@ -159,8 +164,9 @@ const AlineamientoPage = ({ onBack }) => {
               Alineamiento de Secuencias
             </h1>
             <p className={styles.description}>
-              Visualización interactiva de algoritmos de alineamiento de secuencias (Needleman-Wunsch y Smith-Waterman)
-              con matriz de programación dinámica paso a paso.
+              Visualización interactiva de algoritmos de alineamiento de
+              secuencias (Needleman-Wunsch y Smith-Waterman) con matriz de
+              programación dinámica paso a paso.
             </p>
           </div>
         </div>
@@ -199,7 +205,9 @@ const AlineamientoPage = ({ onBack }) => {
                     <option value="ARN">ARN</option>
                     <option value="PROTEINA">Proteína</option>
                   </select>
-                  <small className={styles.hint}>Tipo de secuencia biológica a alinear</small>
+                  <small className={styles.hint}>
+                    Tipo de secuencia biológica a alinear
+                  </small>
                 </div>
               </div>
 
@@ -214,7 +222,9 @@ const AlineamientoPage = ({ onBack }) => {
                     placeholder="ATGCC"
                     className={styles.input}
                   />
-                  <small className={styles.hint}>Primera secuencia a alinear (máximo 20 caracteres)</small>
+                  <small className={styles.hint}>
+                    Primera secuencia a alinear (máximo 20 caracteres)
+                  </small>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -227,7 +237,9 @@ const AlineamientoPage = ({ onBack }) => {
                     placeholder="GTCA"
                     className={styles.input}
                   />
-                  <small className={styles.hint}>Segunda secuencia a alinear (máximo 20 caracteres)</small>
+                  <small className={styles.hint}>
+                    Segunda secuencia a alinear (máximo 20 caracteres)
+                  </small>
                 </div>
               </div>
 
@@ -240,9 +252,10 @@ const AlineamientoPage = ({ onBack }) => {
                     value={formData.match}
                     onChange={handleInputChange}
                     className={styles.input}
-                    step="0.1"
                   />
-                  <small className={styles.hint}>Puntuación por coincidencia</small>
+                  <small className={styles.hint}>
+                    Puntuación por coincidencia
+                  </small>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -253,9 +266,10 @@ const AlineamientoPage = ({ onBack }) => {
                     value={formData.mismatch}
                     onChange={handleInputChange}
                     className={styles.input}
-                    step="0.1"
                   />
-                  <small className={styles.hint}>Penalización por no coincidencia</small>
+                  <small className={styles.hint}>
+                    Penalización por no coincidencia
+                  </small>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -266,13 +280,18 @@ const AlineamientoPage = ({ onBack }) => {
                     value={formData.gap}
                     onChange={handleInputChange}
                     className={styles.input}
-                    step="0.1"
                   />
-                  <small className={styles.hint}>Penalización por hueco (gap)</small>
+                  <small className={styles.hint}>
+                    Penalización por hueco (gap)
+                  </small>
                 </div>
               </div>
 
-              <button type="submit" disabled={loading} className={styles.submitButton}>
+              <button
+                type="submit"
+                disabled={loading}
+                className={styles.submitButton}
+              >
                 {loading ? "Ejecutando..." : "Ejecutar Alineamiento"}
               </button>
             </form>
@@ -286,13 +305,17 @@ const AlineamientoPage = ({ onBack }) => {
 
           {result && (
             <div className={styles.resultsSection}>
-              <h3 className={styles.resultsTitle}>Visualización del Alineamiento</h3>
+              <h3 className={styles.resultsTitle}>
+                Visualización del Alineamiento
+              </h3>
 
               <div className={styles.sequenceInfo}>
                 <div className={styles.infoItem}>
                   <strong>Algoritmo:</strong>
                   <span className={styles.algorithmBadge}>
-                    {formData.algorithm === "needleman" ? "Needleman-Wunsch" : "Smith-Waterman"}
+                    {formData.algorithm === "needleman"
+                      ? "Needleman-Wunsch"
+                      : "Smith-Waterman"}
                   </span>
                 </div>
                 <div className={styles.infoItem}>
@@ -304,23 +327,34 @@ const AlineamientoPage = ({ onBack }) => {
                 <div className={styles.infoItem}>
                   <strong>Parámetros:</strong>
                   <span className={styles.paramValue}>
-                    Match: {formData.match}, Mismatch: {formData.mismatch}, Gap: {formData.gap}
+                    Match: {formData.match}, Mismatch: {formData.mismatch}, Gap:{" "}
+                    {formData.gap}
                   </span>
                 </div>
                 {result.traceback_path && (
                   <div className={styles.infoItem}>
                     <strong>Camino óptimo:</strong>
-                    <span className={styles.tracebackInfo}>{result.traceback_path.length} pasos en el traceback</span>
+                    <span className={styles.tracebackInfo}>
+                      {result.traceback_path.length} pasos en el traceback
+                    </span>
                   </div>
                 )}
               </div>
 
               <div className={styles.controlsSection}>
                 <div className={styles.stepControls}>
-                  <button className={styles.controlButton} onClick={resetAnimation} disabled={currentStep === 0}>
+                  <button
+                    className={styles.controlButton}
+                    onClick={resetAnimation}
+                    disabled={currentStep === 0}
+                  >
                     ⏮ Inicio
                   </button>
-                  <button className={styles.controlButton} onClick={prevStep} disabled={currentStep === 0}>
+                  <button
+                    className={styles.controlButton}
+                    onClick={prevStep}
+                    disabled={currentStep === 0}
+                  >
                     ⏪ Anterior
                   </button>
                   <button className={styles.playButton} onClick={togglePlay}>
@@ -340,19 +374,25 @@ const AlineamientoPage = ({ onBack }) => {
                   >
                     Final ⏭
                   </button>
-                  {result.traceback_path && (
-                    <button
-                      className={`${styles.tracebackButton} ${showTraceback ? styles.active : ""}`}
-                      onClick={() => setShowTraceback(!showTraceback)}
-                    >
-                      🎯 {showTraceback ? "Ocultar" : "Mostrar"} Traceback
-                    </button>
-                  )}
+                  {result.traceback_path &&
+                    currentStep === result.matrix_steps.length - 1 && (
+                      <button
+                        className={`${styles.tracebackButton} ${
+                          showTraceback ? styles.active : ""
+                        }`}
+                        onClick={() => setShowTraceback(!showTraceback)}
+                      >
+                        🎯 {showTraceback ? "Ocultar" : "Mostrar"} Traceback
+                      </button>
+                    )}
                 </div>
 
                 <div className={styles.speedControl}>
                   <label>Velocidad:</label>
-                  <select value={playSpeed} onChange={(e) => setPlaySpeed(Number(e.target.value))}>
+                  <select
+                    value={playSpeed}
+                    onChange={(e) => setPlaySpeed(Number(e.target.value))}
+                  >
                     <option value={2000}>Lenta</option>
                     <option value={1000}>Normal</option>
                     <option value={500}>Rápida</option>
@@ -382,48 +422,68 @@ const AlineamientoPage = ({ onBack }) => {
                     </div>
 
                     {/* Matriz con headers de filas */}
-                    {result.matrix_steps[currentStep]?.matrix.map((row, rowIndex) => (
-                      <div key={rowIndex} className={styles.matrixRow}>
-                        <div className={styles.headerCell}>{rowIndex === 0 ? "-" : formData.seq1[rowIndex - 1]}</div>
-                        {row.map((cell, colIndex) => {
-                          const isHighlighted =
-                            result.matrix_steps[currentStep]?.highlight?.row === rowIndex &&
-                            result.matrix_steps[currentStep]?.highlight?.col === colIndex
+                    {result.matrix_steps[currentStep]?.matrix.map(
+                      (row, rowIndex) => (
+                        <div key={rowIndex} className={styles.matrixRow}>
+                          <div className={styles.headerCell}>
+                            {rowIndex === 0 ? "-" : formData.seq1[rowIndex - 1]}
+                          </div>
+                          {row.map((cell, colIndex) => {
+                            const isHighlighted =
+                              result.matrix_steps[currentStep]?.highlight
+                                ?.row === rowIndex &&
+                              result.matrix_steps[currentStep]?.highlight
+                                ?.col === colIndex;
 
-                          const isInTracebackPath = isInTraceback(rowIndex, colIndex)
-                          const from = isHighlighted ? result.matrix_steps[currentStep]?.from : null
+                            const isInTracebackPath = isInTraceback(
+                              rowIndex,
+                              colIndex
+                            );
+                            const from = isHighlighted
+                              ? result.matrix_steps[currentStep]?.from
+                              : null;
 
-                          return (
-                            <div
-                              key={colIndex}
-                              className={`${styles.matrixCell} ${isHighlighted ? styles.highlighted : ""} ${
-                                isInTracebackPath ? styles.tracebackCell : ""
-                              }`}
-                              style={{
-                                backgroundColor: isHighlighted
-                                  ? getDirectionColor(from) + "20"
-                                  : isInTracebackPath
+                            return (
+                              <div
+                                key={colIndex}
+                                className={`${styles.matrixCell} ${
+                                  isHighlighted ? styles.highlighted : ""
+                                } ${
+                                  isInTracebackPath ? styles.tracebackCell : ""
+                                }`}
+                                style={{
+                                  backgroundColor: isHighlighted
+                                    ? getDirectionColor(from) + "20"
+                                    : isInTracebackPath
                                     ? "#fecaca"
                                     : "white",
-                                borderColor: isHighlighted
-                                  ? getDirectionColor(from)
-                                  : isInTracebackPath
+                                  borderColor: isHighlighted
+                                    ? getDirectionColor(from)
+                                    : isInTracebackPath
                                     ? "#ef4444"
                                     : "#e2e8f0",
-                              }}
-                            >
-                              <div className={styles.cellValue}>{cell}</div>
-                              {isHighlighted && from && from !== "none" && (
-                                <div className={styles.directionArrow} style={{ color: getDirectionColor(from) }}>
-                                  {getDirectionArrow(from)}
-                                </div>
-                              )}
-                              {isInTracebackPath && <div className={styles.tracebackIndicator}>●</div>}
-                            </div>
-                          )
-                        })}
-                      </div>
-                    ))}
+                                }}
+                              >
+                                <div className={styles.cellValue}>{cell}</div>
+                                {isHighlighted && from && from !== "none" && (
+                                  <div
+                                    className={styles.directionArrow}
+                                    style={{ color: getDirectionColor(from) }}
+                                  >
+                                    {getDirectionArrow(from)}
+                                  </div>
+                                )}
+                                {isInTracebackPath && (
+                                  <div className={styles.tracebackIndicator}>
+                                    ●
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
 
@@ -431,26 +491,38 @@ const AlineamientoPage = ({ onBack }) => {
                   <h4>Leyenda:</h4>
                   <div className={styles.legendItems}>
                     <div className={styles.legendItem}>
-                      <span className={styles.legendArrow} style={{ color: "#10b981" }}>
+                      <span
+                        className={styles.legendArrow}
+                        style={{ color: "#10b981" }}
+                      >
                         ↖
                       </span>
                       <span>Diagonal (Match/Mismatch)</span>
                     </div>
                     <div className={styles.legendItem}>
-                      <span className={styles.legendArrow} style={{ color: "#3b82f6" }}>
+                      <span
+                        className={styles.legendArrow}
+                        style={{ color: "#3b82f6" }}
+                      >
                         ↑
                       </span>
                       <span>Arriba (Gap en seq2)</span>
                     </div>
                     <div className={styles.legendItem}>
-                      <span className={styles.legendArrow} style={{ color: "#f59e0b" }}>
+                      <span
+                        className={styles.legendArrow}
+                        style={{ color: "#f59e0b" }}
+                      >
                         ←
                       </span>
                       <span>Izquierda (Gap en seq1)</span>
                     </div>
                     {showTraceback && result.traceback_path && (
                       <div className={styles.legendItem}>
-                        <span className={styles.legendArrow} style={{ color: "#ef4444" }}>
+                        <span
+                          className={styles.legendArrow}
+                          style={{ color: "#ef4444" }}
+                        >
                           ●
                         </span>
                         <span>Camino óptimo (Traceback)</span>
@@ -465,7 +537,9 @@ const AlineamientoPage = ({ onBack }) => {
                   <div
                     className={styles.progressFill}
                     style={{
-                      width: `${((currentStep + 1) / result.matrix_steps.length) * 100}%`,
+                      width: `${
+                        ((currentStep + 1) / result.matrix_steps.length) * 100
+                      }%`,
                     }}
                   ></div>
                 </div>
@@ -473,9 +547,9 @@ const AlineamientoPage = ({ onBack }) => {
                   {result.matrix_steps.map((_, index) => (
                     <button
                       key={index}
-                      className={`${styles.stepDot} ${index === currentStep ? styles.activeDot : ""} ${
-                        index <= currentStep ? styles.completedDot : ""
-                      }`}
+                      className={`${styles.stepDot} ${
+                        index === currentStep ? styles.activeDot : ""
+                      } ${index <= currentStep ? styles.completedDot : ""}`}
                       onClick={() => goToStep(index)}
                       title={`Ir al paso ${index + 1}`}
                     />
@@ -489,21 +563,28 @@ const AlineamientoPage = ({ onBack }) => {
                   <div className={styles.alignmentResult}>
                     <div className={styles.alignmentRow}>
                       <span className={styles.alignmentLabel}>Seq1:</span>
-                      <span className={styles.alignmentSequence}>{result.final_alignment.seq1}</span>
+                      <span className={styles.alignmentSequence}>
+                        {result.final_alignment.seq1}
+                      </span>
                     </div>
                     <div className={styles.alignmentRow}>
                       <span className={styles.alignmentLabel}>Seq2:</span>
-                      <span className={styles.alignmentSequence}>{result.final_alignment.seq2}</span>
+                      <span className={styles.alignmentSequence}>
+                        {result.final_alignment.seq2}
+                      </span>
                     </div>
                   </div>
 
                   {showTraceback && result.traceback_path && (
                     <div className={styles.tracebackDetails}>
-                      <h5 className={styles.tracebackTitle}>📍 Detalles del Traceback:</h5>
+                      <h5 className={styles.tracebackTitle}>
+                        📍 Detalles del Traceback:
+                      </h5>
                       <div className={styles.tracebackPath}>
                         {result.traceback_path.map((step, index) => (
                           <span key={index} className={styles.tracebackStep}>
-                            ({step.row}, {step.col}){index < result.traceback_path.length - 1 && " → "}
+                            ({step.row}, {step.col})
+                            {index < result.traceback_path.length - 1 && " → "}
                           </span>
                         ))}
                       </div>
@@ -516,7 +597,7 @@ const AlineamientoPage = ({ onBack }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AlineamientoPage
+export default AlineamientoPage;

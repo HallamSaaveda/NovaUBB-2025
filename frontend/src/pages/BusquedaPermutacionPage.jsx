@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react"
 import { busquedaPermutacionService } from "../services/busqueda-permutacion.service"
 import styles from "../styles/busqueda-permutacion-page.module.css"

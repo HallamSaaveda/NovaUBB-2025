@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { vertexCoverService } from "../services/vertex-cover.service"
 import styles from "../styles/vertex-cover-page.module.css"

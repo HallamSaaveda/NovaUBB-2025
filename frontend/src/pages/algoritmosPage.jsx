@@ -8,7 +8,7 @@ const algorithms = [
   {
     id: 1,
     key: "alineamiento",
-    title: "BLAST - Alineamiento de Secuencias",
+    title: "Alineamiento de Secuencias",
     description: "Herramienta para encontrar regiones de similitud local entre secuencias biológicas.",
     category: "Alineamiento",
     difficulty: "Intermedio",
