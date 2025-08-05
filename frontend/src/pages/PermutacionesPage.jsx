@@ -50,7 +50,6 @@ const PermutacionesPage = ({ onBack }) => {
         dataToSend.molecula = formData.molecula;
       }
 
-      console.log("Datos enviados al backend:", dataToSend); // Para debug
 
       const response = await permutacionesService.generarPermutaciones(
         dataToSend

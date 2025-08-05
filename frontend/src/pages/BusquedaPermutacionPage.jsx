@@ -86,8 +86,6 @@ const BusquedaPermutacionPage = ({ onBack }) => {
         dataToSend.molecula = formData.molecula
       }
 
-      console.log("Datos enviados al backend:", dataToSend) // Para debug
-
       const response = await busquedaPermutacionService.buscarPermutacion(dataToSend)
       setResult(response.data)
     } catch (err) {
