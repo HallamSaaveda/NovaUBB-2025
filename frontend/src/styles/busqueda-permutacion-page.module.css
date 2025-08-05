@@ -1,0 +1,437 @@
+.container {
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 2rem;
+}
+
+.backButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.titleSection {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 3rem;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.formSection {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.input,
+.select {
+  padding: 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.hint {
+  color: #6b7280;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.submitButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.resultsSection {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.resultsTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.searchSummary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.summaryItem {
+  color: #374151;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sequenceValue,
+.stepsValue,
+.resultValue {
+  font-family: "Courier New", monospace;
+  background: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+}
+
+.found {
+  color: #059669;
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.notFound {
+  color: #dc2626;
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.searchProcess {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.stepsLog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logStep {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.foundStep {
+  background: #ecfdf5;
+  border-color: #10b981;
+}
+
+.stepNumber {
+  background: #e2e8f0;
+  color: #374151;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.foundStep .stepNumber {
+  background: #10b981;
+  color: white;
+}
+
+.stepContent {
+  flex: 1;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.foundBadge {
+  background: #10b981;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.searchAnalysis {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.analysisStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.statItem:last-child {
+  border-bottom: none;
+}
+
+.statLabel {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.statValue {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: #059669 !important;
+}
+
+.failure {
+  color: #dc2626 !important;
+}
+
+.algorithmExplanation {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.explanationContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.explanationItem {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.explanationTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+.explanationText {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Scrollbar personalizado para el log de pasos */
+.stepsLog::-webkit-scrollbar {
+  width: 6px;
+}
+
+.stepsLog::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.stepsLog::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.stepsLog::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .searchSummary {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .header {
+    padding: 1.5rem;
+  }
+
+  .statItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .logStep {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .stepNumber {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .explanationContent {
+    gap: 1rem;
+  }
+
+  .explanationItem {
+    padding: 1rem;
+  }
+
+  .searchProcess,
+  .searchAnalysis,
+  .algorithmExplanation {
+    padding: 1rem;
+  }
+
+  .stepsLog {
+    max-height: 300px;
+  }
+}

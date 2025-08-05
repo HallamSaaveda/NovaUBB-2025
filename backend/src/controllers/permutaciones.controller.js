@@ -9,6 +9,7 @@ import {
 export async function generarPermutaciones(req, res) {
   try {
     const { error } = permutacionValidation.validate(req.body);
+    console.log("Validating permutaciones data:", req.body);
     if (error) return handleErrorClient(res, 400, "Validación fallida", error.details.map(d => d.message));
 
     const resultado = await ejecutarPermutacionesPython(req.body);

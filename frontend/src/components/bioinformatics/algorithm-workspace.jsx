@@ -1,11 +1,11 @@
-"use client"
-
 import { useState } from "react"
 import styles from "../../styles/algorithm-workspace.module.css"
 import bioinformaticsStyles from "../../styles/bioinformatics.module.css"
 import VertexCoverPage from "../../pages/vertexCoverPage"
+import ArbolesPage from "../../pages/ArbolesPage"
+import PermutacionesPage from "../../pages/PermutacionesPage"
+import BusquedaPermutacionPage from "../../pages/BusquedaPermutacionPage"
 
-// Componentes de algoritmos (por ahora con lorem ipsum)
 const AlgorithmComponents = {
   alineamiento: () => (
     <div className={styles.algorithmContent}>
@@ -23,51 +23,10 @@ const AlgorithmComponents = {
       </div>
     </div>
   ),
-  permutaciones: () => (
-    <div className={styles.algorithmContent}>
-      <h3>Generación de Permutaciones</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et
-        ultrices posuere cubilia curae.
-      </p>
-      <div className={styles.inputSection}>
-        <label>Secuencia:</label>
-        <input type="text" placeholder="ATCG" />
-        <button className={styles.executeBtn}>Generar Permutaciones</button>
-      </div>
-    </div>
-  ),
-  "busqueda-permutacion": () => (
-    <div className={styles.algorithmContent}>
-      <h3>Búsqueda de Permutación</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh
-        pulvinar a.
-      </p>
-      <div className={styles.inputSection}>
-        <label>Secuencia base:</label>
-        <input type="text" placeholder="ATCG" />
-        <label>Objetivo:</label>
-        <input type="text" placeholder="CGTA" />
-        <button className={styles.executeBtn}>Buscar Permutación</button>
-      </div>
-    </div>
-  ),
+  permutaciones: () => <PermutacionesPage />,
+  "busqueda-permutacion": () => <BusquedaPermutacionPage />,
   "vertex-cover": () => <VertexCoverPage />,
-  arboles: () => (
-    <div className={styles.algorithmContent}>
-      <h3>Árboles Jerárquicos</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Curabitur non
-        nulla sit amet nisl tempus convallis quis ac lectus.
-      </p>
-      <div className={styles.inputSection}>
-        <label>Matriz de distancias:</label>
-        <textarea placeholder="0,2,4&#10;2,0,3&#10;4,3,0" rows={4}></textarea>
-        <button className={styles.executeBtn}>Generar Árbol</button>
-      </div>
-    </div>
-  ),
+  arboles: () => <ArbolesPage />,
   estructura: () => (
     <div className={styles.algorithmContent}>
       <h3>Predicción de Estructura</h3>

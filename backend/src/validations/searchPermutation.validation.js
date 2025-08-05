@@ -1,31 +1,38 @@
 import Joi from 'joi';
 
-// Sets de validación
-const soloTexto = Joi.string().pattern(/^[a-zA-Z]$/).messages({
-  'string.pattern.base': 'Solo se permiten letras (una por elemento).'
-});
-const soloNumerico = Joi.number().messages({
-  'number.base': 'Solo se permiten números.'
-});
-const letrasADN = Joi.string().valid('A', 'C', 'G', 'T');
-const letrasARN = Joi.string().valid('A', 'C', 'G', 'U');
+// Validaciones reutilizables
+function validarSecuenciaPorTipo(tipo, molecula) {
+  return Joi.string().custom((value, helpers) => {
+    const input = value.trim().toUpperCase();
 
-// Función dinámica para validar elementos según tipo y molécula
-function getElementoSchema(tipo, molecula) {
-  switch (tipo) {
-    case 'numerico':
-      return soloNumerico;
-    case 'texto':
-      return soloTexto;
-    case 'combinado':
-      return Joi.alternatives().try(soloTexto, soloNumerico);
-    case 'biologico':
-      if (molecula === 'ADN') return letrasADN;
-      if (molecula === 'ARN') return letrasARN;
-      return Joi.any().forbidden().messages({ 'any.unknown': 'Molecula inválida o faltante para tipo biologico.' });
-    default:
-      return Joi.any().forbidden();
-  }
+    if (tipo === 'texto') {
+      if (!/^[A-Za-z]$/.test(input)) {
+        return helpers.message("Para tipo 'texto', solo se permiten letras (una sola letra entre A-Z o a-z).");
+      }
+    } else if (tipo === 'numerico') {
+      if (!/^\d+$/.test(input)) {
+        return helpers.message("Para tipo 'numerico', solo se permiten dígitos.");
+      }
+    } else if (tipo === 'combinado') {
+      if (!/^[A-Za-z0-9]$/.test(input)) {
+        return helpers.message("Para tipo 'combinado', solo se permite una letra o un número.");
+      }
+    } else if (tipo === 'biologico') {
+      const letrasValidas = molecula === 'ADN' ? ['A', 'C', 'G', 'T']
+                         : molecula === 'ARN' ? ['A', 'C', 'G', 'U']
+                         : null;
+
+      if (!letrasValidas) {
+        return helpers.message("Molécula inválida o faltante para tipo 'biologico'.");
+      }
+
+      if (!letrasValidas.includes(input)) {
+        return helpers.message(`Para ${molecula}, solo se permiten letras: ${letrasValidas.join(', ')}.`);
+      }
+    }
+
+    return input;
+  });
 }
 
 // Esquema principal
@@ -44,13 +51,19 @@ export const searchPermutationValidation = Joi.object({
     .max(6)
     .required()
     .custom((value, helpers) => {
-      const tipo = helpers.state.ancestors[0].tipo;
-      const molecula = helpers.state.ancestors[0].molecula;
-      const schema = getElementoSchema(tipo, molecula);
+      const { tipo, molecula } = helpers.state.ancestors[0];
+      const schema = validarSecuenciaPorTipo(tipo, molecula);
+
       for (let i = 0; i < value.length; i++) {
-        const { error } = schema.validate(value[i]);
-        if (error) return helpers.message(`Elemento inválido en 'inicial': ${error.message}`);
+        const item = value[i];
+        const { error } = schema.validate(item);
+        if (error) {
+          return helpers.message(
+            `Elemento inválido en la secuencia inicial: '${item}' no es válido. ${error.message}`
+          );
+        }
       }
+
       return value;
     }),
 
@@ -58,13 +71,19 @@ export const searchPermutationValidation = Joi.object({
     .max(6)
     .required()
     .custom((value, helpers) => {
-      const tipo = helpers.state.ancestors[0].tipo;
-      const molecula = helpers.state.ancestors[0].molecula;
-      const schema = getElementoSchema(tipo, molecula);
+      const { tipo, molecula } = helpers.state.ancestors[0];
+      const schema = validarSecuenciaPorTipo(tipo, molecula);
+
       for (let i = 0; i < value.length; i++) {
-        const { error } = schema.validate(value[i]);
-        if (error) return helpers.message(`Elemento inválido en 'objetivo': ${error.message}`);
+        const item = value[i];
+        const { error } = schema.validate(item);
+        if (error) {
+          return helpers.message(
+            `Elemento inválido en la secuencia objetivo: '${item}' no es válido. ${error.message}`
+          );
+        }
       }
+
       return value;
     })
 });

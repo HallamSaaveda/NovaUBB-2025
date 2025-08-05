@@ -6,7 +6,8 @@ export const permutacionesService = {
       const response = await axiosInstance.post("/permutaciones", data)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Error al generar permutaciones")
+        console.error("Error en generarPermutaciones:", error.response?.data || error.message);
+      throw new Error(error.response?.data?.details || "Error al generar permutaciones")
     }
   }
 } 
