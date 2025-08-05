@@ -5,6 +5,7 @@ import investigacionRoutes from "./investigacion.routes.js"
 import archivoPersonalRoutes from "./archivo-personal.routes.js" //
 import permutacionesRoutes from "./permutaciones.routes.js"
 import vertexCoverRoutes from "./vertex-cover.routes.js"
+import arbolesRoutes from "./arboles.routes.js"
 
 const router = Router()
 
@@ -14,5 +15,6 @@ router.use("/investigaciones", investigacionRoutes)
 router.use("/personal", archivoPersonalRoutes) //
 router.use("/permutaciones", permutacionesRoutes)
 router.use("/vertex-cover", vertexCoverRoutes)
+router.use("/arboles", arbolesRoutes)
 
 export default router
