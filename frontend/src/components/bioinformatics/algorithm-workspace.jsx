@@ -79,16 +79,6 @@ export default function AlgorithmWorkspace({ algorithm, algorithms, onAlgorithmC
         </div>
 
         <div className={styles.mainContent}>
-          <div className={styles.contentHeader}>
-            <h2 className={styles.contentTitle}>
-              {algorithms.find((alg) => alg.key === activeAlgorithm)?.icon}
-              {algorithms.find((alg) => alg.key === activeAlgorithm)?.title}
-            </h2>
-            <p className={styles.contentDescription}>
-              {algorithms.find((alg) => alg.key === activeAlgorithm)?.description}
-            </p>
-          </div>
-
           <div className={styles.workspaceContent}>{renderAlgorithm()}</div>
         </div>
       </div>
