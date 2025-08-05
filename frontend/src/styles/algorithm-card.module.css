@@ -27,18 +27,18 @@
   margin-bottom: 0;
 }
 
-.listCardContent {
+.listCardHeader {
   display: flex;
   align-items: center;
   gap: 1rem;
-  width: 100%;
+  margin-bottom: 0.75rem;
 }
 
 .listIcon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   border-radius: 12px;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,15 +46,8 @@
   color: white;
 }
 
-.listInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
 .listTitle {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #1e293b;
   margin: 0;
@@ -65,13 +58,43 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  margin-bottom: 0.75rem;
 }
 
 .listDescription {
   color: #64748b;
-  line-height: 1.4;
-  margin: 0;
-  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.listCardFooter {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.listCardFooter .runButton {
+  flex: 1;
+}
+
+.listCardFooter .expandButton {
+  white-space: nowrap;
+}
+
+.listCardContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.listInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .listActions {
@@ -295,6 +318,22 @@
 
   .listCard {
     padding: 1rem;
+  }
+
+  .listCardHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .listCardFooter {
+    flex-direction: column;
+  }
+
+  .listCardFooter .runButton,
+  .listCardFooter .expandButton {
+    width: 100%;
   }
 
   .listCardContent {

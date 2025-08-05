@@ -31,30 +31,29 @@ export default function AlgorithmCard({ algorithm, viewType = "cards", onAlgorit
     return (
       <div className={bioinformaticsStyles.bioinformaticsSection}>
         <div className={`${styles.card} ${styles.listCard} ${isExpanded ? styles.expanded : ""}`}>
-          <div className={styles.listCardContent}>
+          <div className={styles.listCardHeader}>
             <div className={styles.listIcon} style={{ backgroundColor: algorithm.color }}>
               {algorithm.icon}
             </div>
-            
-            <div className={styles.listInfo}>
-              <h3 className={styles.listTitle}>{algorithm.title}</h3>
-              <div className={styles.listBadges}>
-                <span className={styles.category}>{algorithm.category}</span>
-                <span className={styles.difficulty} style={{ backgroundColor: getDifficultyColor(algorithm.difficulty) }}>
-                  {algorithm.difficulty}
-                </span>
-              </div>
-              <p className={styles.listDescription}>{algorithm.description}</p>
-            </div>
-            
-            <div className={styles.listActions}>
-              <button className={styles.runButton} onClick={handleRunAlgorithm}>
-                Abrir
-              </button>
-              <button className={styles.expandButton} onClick={handleCardClick}>
-                {isExpanded ? "Ver menos" : "Ver más"}
-              </button>
-            </div>
+            <h3 className={styles.listTitle}>{algorithm.title}</h3>
+          </div>
+          
+          <div className={styles.listBadges}>
+            <span className={styles.category}>{algorithm.category}</span>
+            <span className={styles.difficulty} style={{ backgroundColor: getDifficultyColor(algorithm.difficulty) }}>
+              {algorithm.difficulty}
+            </span>
+          </div>
+          
+          <p className={styles.listDescription}>{algorithm.description}</p>
+          
+          <div className={styles.listCardFooter}>
+            <button className={styles.runButton} onClick={handleRunAlgorithm}>
+              Abrir Algoritmo
+            </button>
+            <button className={styles.expandButton} onClick={handleCardClick}>
+              {isExpanded ? "Ver menos" : "Ver más"}
+            </button>
           </div>
 
           {isExpanded && (
