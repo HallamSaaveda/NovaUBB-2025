@@ -13,6 +13,8 @@ const PermutacionesPage = ({ onBack }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showAllBacktracking, setShowAllBacktracking] = useState(false);
+  const [showAllItertools, setShowAllItertools] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,11 +52,15 @@ const PermutacionesPage = ({ onBack }) => {
         dataToSend.molecula = formData.molecula;
       }
 
+      console.log("Datos enviados al backend:", dataToSend); // Para debug
 
       const response = await permutacionesService.generarPermutaciones(
         dataToSend
       );
       setResult(response.data);
+      // Resetear estados de visualización
+      setShowAllBacktracking(false);
+      setShowAllItertools(false);
     } catch (err) {
       setError(err.message || "Error al generar permutaciones");
     } finally {
@@ -123,7 +129,7 @@ const PermutacionesPage = ({ onBack }) => {
                     className={styles.select}
                   >
                     <option value="texto">Texto</option>
-                    <option value="numerico">Número</option>
+                    <option value="numerico">Númerico</option>
                     <option value="biologico">Biológico</option>
                   </select>
                   <small className={styles.hint}>{getTipoDescription()}</small>
@@ -192,11 +198,18 @@ const PermutacionesPage = ({ onBack }) => {
                   </div>
                   <div className={styles.permutationsList}>
                     <h5 className={styles.listTitle}>
-                      Primeras permutaciones:
+                      {showAllBacktracking
+                        ? "Todas las permutaciones:"
+                        : "Primeras permutaciones:"}
                     </h5>
                     <div className={styles.permutationsGrid}>
                       {result.backtracking.permutaciones
-                        .slice(0, 20)
+                        .slice(
+                          0,
+                          showAllBacktracking
+                            ? result.backtracking.permutaciones.length
+                            : 20
+                        )
                         .map((perm, index) => (
                           <span key={index} className={styles.permutationItem}>
                             {perm}
@@ -204,13 +217,32 @@ const PermutacionesPage = ({ onBack }) => {
                         ))}
                     </div>
                     {result.backtracking.permutaciones.length > 20 && (
-                      <p className={styles.moreInfo}>
-                        ... y{" "}
-                        {(
-                          result.backtracking.permutaciones.length - 20
-                        ).toLocaleString()}{" "}
-                        más
-                      </p>
+                      <div className={styles.permutationControls}>
+                        {!showAllBacktracking ? (
+                          <>
+                            <p className={styles.moreInfo}>
+                              ... y{" "}
+                              {(
+                                result.backtracking.permutaciones.length - 20
+                              ).toLocaleString()}{" "}
+                              más
+                            </p>
+                            <button
+                              className={styles.showAllButton}
+                              onClick={() => setShowAllBacktracking(true)}
+                            >
+                              📋 Mostrar todas las permutaciones
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            className={styles.showLessButton}
+                            onClick={() => setShowAllBacktracking(false)}
+                          >
+                            📄 Mostrar solo las primeras 20
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -231,11 +263,18 @@ const PermutacionesPage = ({ onBack }) => {
                   </div>
                   <div className={styles.permutationsList}>
                     <h5 className={styles.listTitle}>
-                      Primeras permutaciones:
+                      {showAllItertools
+                        ? "Todas las permutaciones:"
+                        : "Primeras permutaciones:"}
                     </h5>
                     <div className={styles.permutationsGrid}>
                       {result.itertools.permutaciones
-                        .slice(0, 20)
+                        .slice(
+                          0,
+                          showAllItertools
+                            ? result.itertools.permutaciones.length
+                            : 20
+                        )
                         .map((perm, index) => (
                           <span key={index} className={styles.permutationItem}>
                             {perm}
@@ -243,13 +282,32 @@ const PermutacionesPage = ({ onBack }) => {
                         ))}
                     </div>
                     {result.itertools.permutaciones.length > 20 && (
-                      <p className={styles.moreInfo}>
-                        ... y{" "}
-                        {(
-                          result.itertools.permutaciones.length - 20
-                        ).toLocaleString()}{" "}
-                        más
-                      </p>
+                      <div className={styles.permutationControls}>
+                        {!showAllItertools ? (
+                          <>
+                            <p className={styles.moreInfo}>
+                              ... y{" "}
+                              {(
+                                result.itertools.permutaciones.length - 20
+                              ).toLocaleString()}{" "}
+                              más
+                            </p>
+                            <button
+                              className={styles.showAllButton}
+                              onClick={() => setShowAllItertools(true)}
+                            >
+                              📋 Mostrar todas las permutaciones
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            className={styles.showLessButton}
+                            onClick={() => setShowAllItertools(false)}
+                          >
+                            📄 Mostrar solo las primeras 20
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

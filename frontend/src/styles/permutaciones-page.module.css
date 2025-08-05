@@ -283,6 +283,8 @@
   grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
   gap: 0.5rem;
   margin-bottom: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .permutationItem {
@@ -388,6 +390,62 @@
   margin: 0;
 }
 
+.permutationControls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.showAllButton,
+.showLessButton {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.showAllButton:hover {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.showLessButton {
+  background: #64748b;
+}
+
+.showLessButton:hover {
+  background: #475569;
+  transform: translateY(-1px);
+}
+
+/* Scrollbar personalizado para la grid de permutaciones */
+.permutationsGrid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.permutationsGrid::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.permutationsGrid::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.permutationsGrid::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 @media (max-width: 768px) {
   .title {
     font-size: 2rem;
@@ -408,10 +466,6 @@
   .sequenceInfo {
     grid-template-columns: 1fr;
     gap: 1rem;
-  }
-
-  .permutationsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
   }
 
   .content {
