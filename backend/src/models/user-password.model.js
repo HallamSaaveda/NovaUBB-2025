@@ -17,7 +17,7 @@ const UserPassword = new EntitySchema({
     },
     plainPassword: {
       type: "varchar",
-      length: 50,
+      length: 16,
       nullable: false,
     },
     createAt: {

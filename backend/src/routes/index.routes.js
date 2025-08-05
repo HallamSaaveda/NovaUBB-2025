@@ -6,6 +6,8 @@ import archivoPersonalRoutes from "./archivo-personal.routes.js" //
 import permutacionesRoutes from "./permutaciones.routes.js"
 import secuenciaAlineamiento from "./aligment.routes.js"
 import buscarPermutacion from "./searchPermutation.routes.js"
+import vertexCoverRoutes from "./vertex-cover.routes.js"
+import arbolesRoutes from "./arboles.routes.js"
 
 const router = Router()
 
@@ -16,5 +18,7 @@ router.use("/personal", archivoPersonalRoutes) //
 router.use("/permutaciones", permutacionesRoutes)
 router.use("/alineamiento", secuenciaAlineamiento)
 router.use("/buscar-permutacion", buscarPermutacion)
+router.use("/vertex-cover", vertexCoverRoutes)
+router.use("/arboles", arbolesRoutes)
 
 export default router
