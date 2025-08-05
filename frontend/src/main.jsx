@@ -14,6 +14,7 @@ import UserManagement from "./pages/UserManagement.jsx"
 import PersonalArea from "./pages/PersonalArea.jsx"
 import Investigaciones from "./pages/Investigaciones.jsx"
 import InvestigacionDetalle from "./pages/InvestigacionDetalle.jsx"
+import AlgoritmosPage from "./pages/algoritmosPage.jsx"
 import "./styles/global.css"
 
 function ProtectedRoute({ children }) {
@@ -112,6 +113,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <InvestigacionDetalle />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/algoritmos"
+                element={
+                  <ProtectedRoute>
+                    <AlgoritmosPage />
                   </ProtectedRoute>
                 }
               />

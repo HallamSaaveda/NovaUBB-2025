@@ -70,7 +70,7 @@ const Home = () => {
             title: "Aplicaciones",
             description: "Software creado por estudiantes para las lecciones de bioinformática",
             icon: "📈",
-            onClick: () => navigate("/reports"),
+            onClick: () => navigate("/algoritmos"),
           },
         ]
 
