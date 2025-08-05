@@ -509,6 +509,63 @@
   background: #94a3b8;
 }
 
+.tracebackCell {
+  border-width: 3px;
+  position: relative;
+}
+
+.tracebackIndicator {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  color: #ef4444;
+  font-size: 0.6rem;
+  font-weight: bold;
+}
+
+.tracebackButton {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tracebackButton:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.tracebackButton.active {
+  background: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+/* Animación para el traceback */
+.tracebackCell {
+  animation: tracebackPulse 2s infinite;
+}
+
+@keyframes tracebackPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  }
+}
+
+/* Mejorar la visualización cuando traceback está activo */
+.tracebackCell.highlighted {
+  border-color: #7c3aed;
+  background: linear-gradient(135deg, #fecaca 50%, rgba(139, 92, 246, 0.2) 50%);
+}
+
 @media (max-width: 768px) {
   .title {
     font-size: 2rem;
@@ -577,5 +634,80 @@
 
   .directionArrow {
     font-size: 0.6rem;
+  }
+}
+
+.tracebackInfo {
+  font-family: "Courier New", monospace;
+  background: #fef2f2;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #fecaca;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.tracebackDetails {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fef2f2;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+}
+
+.tracebackTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #dc2626;
+  margin-bottom: 0.75rem;
+}
+
+.tracebackPath {
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.tracebackStep {
+  background: white;
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  border: 1px solid #e5e7eb;
+  margin: 0.125rem;
+  display: inline-block;
+}
+
+/* Mejorar la visualización del traceback cuando está activo */
+.tracebackCell.highlighted {
+  border-color: #7c3aed;
+  background: linear-gradient(135deg, #fecaca 50%, rgba(139, 92, 246, 0.2) 50%);
+}
+
+/* Animación más sutil para el traceback */
+.tracebackCell {
+  animation: tracebackGlow 3s ease-in-out infinite;
+}
+
+@keyframes tracebackGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+  }
+}
+
+/* Responsive para los detalles del traceback */
+@media (max-width: 768px) {
+  .tracebackPath {
+    font-size: 0.8rem;
+  }
+
+  .tracebackStep {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.2rem;
   }
 }

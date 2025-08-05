@@ -52,12 +52,17 @@ def align_sequences(data):
             })
 
     # Retroceso
-    i, j = (m-1, n-1) if algorithm == "needleman" else max(((i, j) for i in range(m) for j in range(n)), key=lambda x: score[x[0]][x[1]])
+    i, j = (m-1, n-1) if algorithm == "needleman" else max(
+        ((i, j) for i in range(m) for j in range(n)),
+        key=lambda x: score[x[0]][x[1]]
+    )
     align1 = ""
     align2 = ""
+    traceback_path = []
 
     if algorithm == "needleman":
         while i > 0 or j > 0:
+            traceback_path.append({"row": i, "col": j})
             if trace[i][j] == "diagonal":
                 align1 = seq1[j-1] + align1
                 align2 = seq2[i-1] + align2
@@ -73,8 +78,9 @@ def align_sequences(data):
                 i -= 1
             else:
                 break
-    else:  # smith-waterman
+    else:  # Smith-Waterman
         while (i > 0 or j > 0) and score[i][j] > 0:
+            traceback_path.append({"row": i, "col": j})
             if trace[i][j] == "diagonal":
                 align1 = seq1[j-1] + align1
                 align2 = seq2[i-1] + align2
@@ -91,8 +97,10 @@ def align_sequences(data):
             else:
                 break
 
+
     return {
         "matrix_steps": steps,
+        "traceback_path": traceback_path[::-1],  # se invierte para ir desde el origen al destino
         "final_alignment": {
             "seq1": align1,
             "seq2": align2

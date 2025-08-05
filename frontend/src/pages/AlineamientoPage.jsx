@@ -20,6 +20,7 @@ const AlineamientoPage = ({ onBack }) => {
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [playSpeed, setPlaySpeed] = useState(1000) // ms
+  const [showTraceback, setShowTraceback] = useState(false)
 
   useEffect(() => {
     let interval
@@ -52,6 +53,7 @@ const AlineamientoPage = ({ onBack }) => {
     setResult(null)
     setCurrentStep(0)
     setIsPlaying(false)
+    setShowTraceback(false)
 
     try {
       // Validaciones básicas
@@ -76,6 +78,8 @@ const AlineamientoPage = ({ onBack }) => {
 
       const response = await alineamientoService.ejecutarAlineamiento(dataToSend)
       setResult(response.data)
+
+      console.log("Traceback path recibido:", response.data.traceback_path)
     } catch (err) {
       setError(err.message || "Error al ejecutar el alineamiento")
     } finally {
@@ -107,6 +111,11 @@ const AlineamientoPage = ({ onBack }) => {
       default:
         return "#6b7280" // Gris
     }
+  }
+
+  const isInTraceback = (row, col) => {
+    if (!result?.traceback_path || !showTraceback) return false
+    return result.traceback_path.some((cell) => cell.row === row && cell.col === col)
   }
 
   const nextStep = () => {
@@ -298,6 +307,12 @@ const AlineamientoPage = ({ onBack }) => {
                     Match: {formData.match}, Mismatch: {formData.mismatch}, Gap: {formData.gap}
                   </span>
                 </div>
+                {result.traceback_path && (
+                  <div className={styles.infoItem}>
+                    <strong>Camino óptimo:</strong>
+                    <span className={styles.tracebackInfo}>{result.traceback_path.length} pasos en el traceback</span>
+                  </div>
+                )}
               </div>
 
               <div className={styles.controlsSection}>
@@ -325,6 +340,14 @@ const AlineamientoPage = ({ onBack }) => {
                   >
                     Final ⏭
                   </button>
+                  {result.traceback_path && (
+                    <button
+                      className={`${styles.tracebackButton} ${showTraceback ? styles.active : ""}`}
+                      onClick={() => setShowTraceback(!showTraceback)}
+                    >
+                      🎯 {showTraceback ? "Ocultar" : "Mostrar"} Traceback
+                    </button>
+                  )}
                 </div>
 
                 <div className={styles.speedControl}>
@@ -366,15 +389,27 @@ const AlineamientoPage = ({ onBack }) => {
                           const isHighlighted =
                             result.matrix_steps[currentStep]?.highlight?.row === rowIndex &&
                             result.matrix_steps[currentStep]?.highlight?.col === colIndex
+
+                          const isInTracebackPath = isInTraceback(rowIndex, colIndex)
                           const from = isHighlighted ? result.matrix_steps[currentStep]?.from : null
 
                           return (
                             <div
                               key={colIndex}
-                              className={`${styles.matrixCell} ${isHighlighted ? styles.highlighted : ""}`}
+                              className={`${styles.matrixCell} ${isHighlighted ? styles.highlighted : ""} ${
+                                isInTracebackPath ? styles.tracebackCell : ""
+                              }`}
                               style={{
-                                backgroundColor: isHighlighted ? getDirectionColor(from) + "20" : "white",
-                                borderColor: isHighlighted ? getDirectionColor(from) : "#e2e8f0",
+                                backgroundColor: isHighlighted
+                                  ? getDirectionColor(from) + "20"
+                                  : isInTracebackPath
+                                    ? "#fecaca"
+                                    : "white",
+                                borderColor: isHighlighted
+                                  ? getDirectionColor(from)
+                                  : isInTracebackPath
+                                    ? "#ef4444"
+                                    : "#e2e8f0",
                               }}
                             >
                               <div className={styles.cellValue}>{cell}</div>
@@ -383,6 +418,7 @@ const AlineamientoPage = ({ onBack }) => {
                                   {getDirectionArrow(from)}
                                 </div>
                               )}
+                              {isInTracebackPath && <div className={styles.tracebackIndicator}>●</div>}
                             </div>
                           )
                         })}
@@ -412,6 +448,14 @@ const AlineamientoPage = ({ onBack }) => {
                       </span>
                       <span>Izquierda (Gap en seq1)</span>
                     </div>
+                    {showTraceback && result.traceback_path && (
+                      <div className={styles.legendItem}>
+                        <span className={styles.legendArrow} style={{ color: "#ef4444" }}>
+                          ●
+                        </span>
+                        <span>Camino óptimo (Traceback)</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -452,6 +496,19 @@ const AlineamientoPage = ({ onBack }) => {
                       <span className={styles.alignmentSequence}>{result.final_alignment.seq2}</span>
                     </div>
                   </div>
+
+                  {showTraceback && result.traceback_path && (
+                    <div className={styles.tracebackDetails}>
+                      <h5 className={styles.tracebackTitle}>📍 Detalles del Traceback:</h5>
+                      <div className={styles.tracebackPath}>
+                        {result.traceback_path.map((step, index) => (
+                          <span key={index} className={styles.tracebackStep}>
+                            ({step.row}, {step.col}){index < result.traceback_path.length - 1 && " → "}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
