@@ -2,12 +2,12 @@ import sys
 import json
 
 def align_sequences(data):
-    seq1 = data["seq1"]
-    seq2 = data["seq2"]
+    seq1 = data["seq1"].strip().upper()
+    seq2 = data["seq2"].strip().upper()
     match = data["match"]
     mismatch = data["mismatch"]
     gap = data["gap"]
-    algorithm = data["algorithm"]
+    algorithm = data["algorithm"].strip().lower()
 
     n = len(seq1) + 1
     m = len(seq2) + 1
