@@ -35,14 +35,15 @@ export default function AlgorithmCard({ algorithm, viewType = "cards", onAlgorit
             <div className={styles.listIcon} style={{ backgroundColor: algorithm.color }}>
               {algorithm.icon}
             </div>
-            <h3 className={styles.listTitle}>{algorithm.title}</h3>
-          </div>
-          
-          <div className={styles.listBadges}>
-            <span className={styles.category}>{algorithm.category}</span>
-            <span className={styles.difficulty} style={{ backgroundColor: getDifficultyColor(algorithm.difficulty) }}>
-              {algorithm.difficulty}
-            </span>
+            <div className={styles.listHeaderInfo}>
+              <h3 className={styles.listTitle}>{algorithm.title}</h3>
+              <div className={styles.listBadges}>
+                <span className={styles.category}>{algorithm.category}</span>
+                <span className={styles.difficulty} style={{ backgroundColor: getDifficultyColor(algorithm.difficulty) }}>
+                  {algorithm.difficulty}
+                </span>
+              </div>
+            </div>
           </div>
           
           <p className={styles.listDescription}>{algorithm.description}</p>

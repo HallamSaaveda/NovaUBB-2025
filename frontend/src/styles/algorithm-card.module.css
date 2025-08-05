@@ -29,7 +29,7 @@
 
 .listCardHeader {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   margin-bottom: 0.75rem;
 }
@@ -46,6 +46,13 @@
   color: white;
 }
 
+.listHeaderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
 .listTitle {
   font-size: 1.25rem;
   font-weight: 600;
@@ -58,7 +65,7 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
+  margin: 0;
 }
 
 .listDescription {
@@ -325,6 +332,10 @@
     align-items: center;
     text-align: center;
     gap: 0.75rem;
+  }
+
+  .listHeaderInfo {
+    align-items: center;
   }
 
   .listCardFooter {
