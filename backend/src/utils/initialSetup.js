@@ -20,15 +20,6 @@ async function createUsers() {
                     role: "admin"
                 })
             ),
-            userRepository.save(
-                userRepository.create({
-                    name: "Oliver Sykes",
-                    rut: "12.345.678-9",
-                    email: "oliver.sykes@gmail.cl",
-                    password: await encryptPassword("bmth2024"),
-                    role: "user"
-                })
-            )
         ]);
         console.log("Users created successfully.");
     } catch (error) {
