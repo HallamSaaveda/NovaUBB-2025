@@ -1,0 +1,257 @@
+.workspaceContainer {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.sidebar {
+  width: 320px;
+  background: #f1f5f9;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.sidebarHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: white;
+}
+
+.backButton {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  transition: background 0.2s ease;
+}
+
+.backButton:hover {
+  background: #7c3aed;
+}
+
+.sidebarTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ef4444;
+  margin: 0;
+}
+
+.algorithmList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.algorithmCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #8b5cf6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.algorithmCard:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.algorithmCard.active {
+  background: #fefefe;
+  border-color: #8b5cf6;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.cardInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.cardDescription {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  background: white;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.contentHeader {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fefefe;
+}
+
+.contentTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contentDescription {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.workspaceContent {
+  padding: 2rem;
+}
+
+.algorithmContent h3 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.algorithmContent p {
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputSection label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.inputSection input,
+.inputSection textarea {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.inputSection input:focus,
+.inputSection textarea:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.executeBtn {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.executeBtn:hover {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+/* Scrollbar personalizado */
+.algorithmList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.algorithmList::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.algorithmList::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.algorithmList::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  .workspaceContainer {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 40vh;
+  }
+
+  .algorithmList {
+    max-height: 300px;
+  }
+
+  .cardDescription {
+    -webkit-line-clamp: 1;
+  }
+
+  .contentHeader {
+    padding: 1.5rem;
+  }
+
+  .contentTitle {
+    font-size: 1.5rem;
+  }
+
+  .workspaceContent {
+    padding: 1.5rem;
+  }
+}

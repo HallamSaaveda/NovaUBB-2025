@@ -1,20 +1,20 @@
 import { useState } from "react"
-import styles from "../styles/algorithm-card.module.css"
-import bioinformaticsStyles from "../styles/bioinformatics.module.css"
+import styles from "../../styles/algorithm-card.module.css"
+import bioinformaticsStyles from "../../styles/bioinformatics.module.css"
 
-export default function AlgorithmCard({ algorithm }) {
+export default function AlgorithmCard({ algorithm, viewType = "cards", onAlgorithmClick }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case "Básico":
-        return "#4CAF50"
+        return "#10B981"
       case "Intermedio":
-        return "#FF9800"
+        return "#F59E0B"
       case "Avanzado":
-        return "#F44336"
+        return "#EF4444"
       default:
-        return "#9E9E9E"
+        return "#6B7280"
     }
   }
 
@@ -24,14 +24,19 @@ export default function AlgorithmCard({ algorithm }) {
 
   const handleRunAlgorithm = (e) => {
     e.stopPropagation()
-    alert(`Ejecutando algoritmo: ${algorithm.title}`)
+    onAlgorithmClick(algorithm)
   }
 
   return (
     <div className={bioinformaticsStyles.bioinformaticsSection}>
-      <div className={`${styles.card} ${isExpanded ? styles.expanded : ""}`} onClick={handleCardClick}>
+      <div
+        className={`${styles.card} ${viewType === "list" ? styles.listCard : ""} ${isExpanded ? styles.expanded : ""}`}
+        onClick={handleCardClick}
+      >
         <div className={styles.cardHeader}>
-          <div className={styles.icon}>{algorithm.icon}</div>
+          <div className={styles.icon} style={{ backgroundColor: algorithm.color }}>
+            {algorithm.icon}
+          </div>
           <div className={styles.headerInfo}>
             <h3 className={styles.title}>{algorithm.title}</h3>
             <div className={styles.badges}>
@@ -41,6 +46,13 @@ export default function AlgorithmCard({ algorithm }) {
               </span>
             </div>
           </div>
+          {viewType === "list" && (
+            <div className={styles.listActions}>
+              <button className={styles.runButton} onClick={handleRunAlgorithm}>
+                Abrir
+              </button>
+            </div>
+          )}
         </div>
 
         <div className={styles.cardBody}>
@@ -50,7 +62,7 @@ export default function AlgorithmCard({ algorithm }) {
             <div className={styles.expandedContent}>
               <h4 className={styles.featuresTitle}>Características principales:</h4>
               <ul className={styles.featuresList}>
-                {algorithm.features.map((feature, index) => (
+                {algorithm.features?.map((feature, index) => (
                   <li key={index} className={styles.feature}>
                     <span className={styles.featureIcon}>✓</span>
                     {feature}
@@ -61,12 +73,20 @@ export default function AlgorithmCard({ algorithm }) {
           )}
         </div>
 
-        <div className={styles.cardFooter}>
-          <button className={styles.runButton} onClick={handleRunAlgorithm}>
-            Ejecutar Algoritmo
-          </button>
-          <button className={styles.expandButton}>{isExpanded ? "Ver menos" : "Ver más"}</button>
-        </div>
+        {viewType === "cards" && (
+          <div className={styles.cardFooter}>
+            <button className={styles.runButton} onClick={handleRunAlgorithm}>
+              Abrir Algoritmo
+            </button>
+            <button className={styles.expandButton}>{isExpanded ? "Ver menos" : "Ver más"}</button>
+          </div>
+        )}
+
+        {viewType === "list" && (
+          <div className={styles.listFooter}>
+            <button className={styles.expandButton}>{isExpanded ? "Ver menos" : "Ver más"}</button>
+          </div>
+        )}
       </div>
     </div>
   )

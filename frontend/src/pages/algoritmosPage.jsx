@@ -1,65 +1,101 @@
-import AlgorithmCard from "../components/algorithm-card"
+import { useState } from "react"
+import AlgorithmCard from "../components/bioinformatics/algorithm-card"
+import AlgorithmWorkspace from "../components/bioinformatics/algorithm-workspace"
 import styles from "../styles/page.module.css"
 import bioinformaticsStyles from "../styles/bioinformatics.module.css"
 
 const algorithms = [
   {
     id: 1,
+    key: "alineamiento",
     title: "BLAST - Alineamiento de Secuencias",
     description: "Herramienta para encontrar regiones de similitud local entre secuencias biológicas.",
     category: "Alineamiento",
     difficulty: "Intermedio",
     icon: "🧬",
+    color: "#8B5CF6",
     features: ["Búsqueda rápida", "Múltiples bases de datos", "Análisis estadístico"],
   },
   {
     id: 2,
-    title: "Traducción ADN a Proteína",
-    description: "Convierte secuencias de nucleótidos en secuencias de aminoácidos usando el código genético.",
-    category: "Traducción",
+    key: "permutaciones",
+    title: "Generación de Permutaciones",
+    description: "Algoritmos de backtracking e itertools para generar todas las permutaciones posibles.",
+    category: "Combinatoria",
     difficulty: "Básico",
     icon: "🔄",
-    features: ["6 marcos de lectura", "Código genético estándar", "Detección de codones"],
+    color: "#3B82F6",
+    features: ["Backtracking", "Generación iterativa", "Optimización de memoria"],
   },
   {
     id: 3,
-    title: "Predicción de Estructura Secundaria",
+    key: "busqueda-permutacion",
+    title: "Búsqueda de Permutación",
+    description: "Algoritmo para encontrar una secuencia objetivo mediante permutaciones.",
+    category: "Búsqueda",
+    difficulty: "Intermedio",
+    icon: "🔍",
+    color: "#10B981",
+    features: ["Búsqueda dirigida", "Heurísticas", "Optimización"],
+  },
+  {
+    id: 4,
+    key: "vertex-cover",
+    title: "Vertex Cover",
+    description: "Algoritmos de fuerza bruta y greedy para encontrar cobertura de vértices en grafos.",
+    category: "Grafos",
+    difficulty: "Avanzado",
+    icon: "🕸️",
+    color: "#F59E0B",
+    features: ["Fuerza bruta", "Algoritmo greedy", "Análisis de grafos"],
+  },
+  {
+    id: 5,
+    key: "arboles",
+    title: "Árboles Jerárquicos",
+    description: "Algoritmos para generar árboles ultramétricos y aditivos a partir de matrices de distancia.",
+    category: "Evolución",
+    difficulty: "Avanzado",
+    icon: "🌳",
+    color: "#EF4444",
+    features: ["Árboles ultramétricos", "Matrices de distancia", "Análisis filogenético"],
+  },
+  {
+    id: 6,
+    key: "estructura",
+    title: "Predicción de Estructura",
     description: "Predice la estructura secundaria de proteínas usando algoritmos de machine learning.",
     category: "Estructura",
     difficulty: "Avanzado",
     icon: "🏗️",
+    color: "#8B5CF6",
     features: ["Predicción α-hélice", "Predicción β-sheet", "Análisis de loops"],
-  },
-  {
-    id: 4,
-    title: "Análisis Filogenético",
-    description: "Construye árboles evolutivos basados en similitudes de secuencias.",
-    category: "Evolución",
-    difficulty: "Avanzado",
-    icon: "🌳",
-    features: ["Método neighbor-joining", "Bootstrap analysis", "Visualización interactiva"],
-  },
-  {
-    id: 5,
-    title: "Búsqueda de Motivos",
-    description: "Identifica patrones conservados en secuencias de ADN o proteínas.",
-    category: "Patrones",
-    difficulty: "Intermedio",
-    icon: "🔍",
-    features: ["Algoritmo MEME", "Análisis de consenso", "Scoring estadístico"],
-  },
-  {
-    id: 6,
-    title: "Ensamblaje de Genomas",
-    description: "Reconstruye genomas completos a partir de lecturas cortas de secuenciación.",
-    category: "Genómica",
-    difficulty: "Avanzado",
-    icon: "🧩",
-    features: ["Algoritmo de Bruijn", "Corrección de errores", "Scaffolding"],
   },
 ]
 
 export default function AlgoritmosPage() {
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
+  const [viewType, setViewType] = useState("cards")
+
+  const handleAlgorithmClick = (algorithm) => {
+    setSelectedAlgorithm(algorithm)
+  }
+
+  const handleBackToHome = () => {
+    setSelectedAlgorithm(null)
+  }
+
+  if (selectedAlgorithm) {
+    return (
+      <AlgorithmWorkspace
+        algorithm={selectedAlgorithm}
+        algorithms={algorithms}
+        onAlgorithmChange={setSelectedAlgorithm}
+        onBackToHome={handleBackToHome}
+      />
+    )
+  }
+
   return (
     <div className={bioinformaticsStyles.bioinformaticsSection}>
       <div className={styles.container}>
@@ -71,17 +107,39 @@ export default function AlgoritmosPage() {
         </header>
 
         <main className={styles.main}>
-          <div className={styles.filters}>
-            <button className={`${styles.filterBtn} ${styles.active}`}>Todos</button>
-            <button className={styles.filterBtn}>Alineamiento</button>
-            <button className={styles.filterBtn}>Estructura</button>
-            <button className={styles.filterBtn}>Evolución</button>
-            <button className={styles.filterBtn}>Genómica</button>
+          <div className={styles.controls}>
+            <div className={styles.filters}>
+              <button className={`${styles.filterBtn} ${styles.active}`}>Todos</button>
+              <button className={styles.filterBtn}>Alineamiento</button>
+              <button className={styles.filterBtn}>Estructura</button>
+              <button className={styles.filterBtn}>Evolución</button>
+              <button className={styles.filterBtn}>Grafos</button>
+            </div>
+
+            <div className={styles.viewToggle}>
+              <button
+                className={`${styles.viewBtn} ${viewType === "cards" ? styles.active : ""}`}
+                onClick={() => setViewType("cards")}
+              >
+                📱 Tarjetas
+              </button>
+              <button
+                className={`${styles.viewBtn} ${viewType === "list" ? styles.active : ""}`}
+                onClick={() => setViewType("list")}
+              >
+                📋 Lista
+              </button>
+            </div>
           </div>
 
-          <div className={styles.grid}>
+          <div className={viewType === "cards" ? styles.grid : styles.list}>
             {algorithms.map((algorithm) => (
-              <AlgorithmCard key={algorithm.id} algorithm={algorithm} />
+              <AlgorithmCard
+                key={algorithm.id}
+                algorithm={algorithm}
+                viewType={viewType}
+                onAlgorithmClick={handleAlgorithmClick}
+              />
             ))}
           </div>
         </main>
