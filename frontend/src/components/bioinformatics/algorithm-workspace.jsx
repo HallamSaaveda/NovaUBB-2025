@@ -5,24 +5,10 @@ import VertexCoverPage from "../../pages/vertexCoverPage"
 import ArbolesPage from "../../pages/ArbolesPage"
 import PermutacionesPage from "../../pages/PermutacionesPage"
 import BusquedaPermutacionPage from "../../pages/BusquedaPermutacionPage"
+import AlineamientoPage from "../../pages/AlineamientoPage"
 
 const AlgorithmComponents = {
-  alineamiento: () => (
-    <div className={styles.algorithmContent}>
-      <h3>Alineamiento de Secuencias</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-      </p>
-      <div className={styles.inputSection}>
-        <label>Secuencia 1:</label>
-        <input type="text" placeholder="ATCG" />
-        <label>Secuencia 2:</label>
-        <input type="text" placeholder="ATCC" />
-        <button className={styles.executeBtn}>Ejecutar Alineamiento</button>
-      </div>
-    </div>
-  ),
+  alineamiento: () => (<AlineamientoPage />),
   permutaciones: () => <PermutacionesPage />,
   "busqueda-permutacion": () => <BusquedaPermutacionPage />,
   "vertex-cover": () => <VertexCoverPage />,
