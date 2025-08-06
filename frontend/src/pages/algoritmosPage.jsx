@@ -32,7 +32,7 @@ const algorithms = [
     key: "busqueda-permutacion",
     title: "Búsqueda de Permutación",
     description: "Algoritmo para encontrar una secuencia objetivo mediante permutaciones.",
-    category: "Búsqueda",
+    category: "Combinatoria",
     difficulty: "Intermedio",
     icon: "🔍",
     color: "#10B981",
@@ -54,7 +54,7 @@ const algorithms = [
     key: "arboles",
     title: "Árboles Jerárquicos",
     description: "Algoritmos para generar árboles ultramétricos y aditivos a partir de matrices de distancia.",
-    category: "Evolución",
+    category: "Grafos",
     difficulty: "Avanzado",
     icon: "🌳",
     color: "#EF4444",
@@ -76,6 +76,7 @@ const algorithms = [
 export default function AlgoritmosPage() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null)
   const [viewType, setViewType] = useState("cards")
+  const [activeFilter, setActiveFilter] = useState("Todos")
 
   const handleAlgorithmClick = (algorithm) => {
     setSelectedAlgorithm(algorithm)
@@ -84,6 +85,14 @@ export default function AlgoritmosPage() {
   const handleBackToHome = () => {
     setSelectedAlgorithm(null)
   }
+
+  const handleFilterClick = (filter) => {
+    setActiveFilter(filter)
+  }
+
+  const filteredAlgorithms = activeFilter === "Todos" 
+    ? algorithms 
+    : algorithms.filter(algorithm => algorithm.category === activeFilter)
 
   if (selectedAlgorithm) {
     return (
@@ -109,11 +118,36 @@ export default function AlgoritmosPage() {
         <main className={styles.main}>
           <div className={styles.controls}>
             <div className={styles.filters}>
-              <button className={`${styles.filterBtn} ${styles.active}`}>Todos</button>
-              <button className={styles.filterBtn}>Alineamiento</button>
-              <button className={styles.filterBtn}>Estructura</button>
-              <button className={styles.filterBtn}>Evolución</button>
-              <button className={styles.filterBtn}>Grafos</button>
+              <button 
+                className={`${styles.filterBtn} ${activeFilter === "Todos" ? styles.active : ""}`}
+                onClick={() => handleFilterClick("Todos")}
+              >
+                Todos
+              </button>
+              <button 
+                className={`${styles.filterBtn} ${activeFilter === "Alineamiento" ? styles.active : ""}`}
+                onClick={() => handleFilterClick("Alineamiento")}
+              >
+                Alineamiento
+              </button>
+              <button 
+                className={`${styles.filterBtn} ${activeFilter === "Estructura" ? styles.active : ""}`}
+                onClick={() => handleFilterClick("Estructura")}
+              >
+                Estructura
+              </button>
+              <button 
+                className={`${styles.filterBtn} ${activeFilter === "Combinatoria" ? styles.active : ""}`}
+                onClick={() => handleFilterClick("Combinatoria")}
+              >
+                Combinatoria
+              </button>
+              <button 
+                className={`${styles.filterBtn} ${activeFilter === "Grafos" ? styles.active : ""}`}
+                onClick={() => handleFilterClick("Grafos")}
+              >
+                Grafos
+              </button>
             </div>
 
             <div className={styles.viewToggle}>
@@ -133,7 +167,7 @@ export default function AlgoritmosPage() {
           </div>
 
           <div className={viewType === "cards" ? styles.grid : styles.list}>
-            {algorithms.map((algorithm) => (
+            {filteredAlgorithms.map((algorithm) => (
               <AlgorithmCard
                 key={algorithm.id}
                 algorithm={algorithm}
@@ -145,7 +179,7 @@ export default function AlgoritmosPage() {
         </main>
 
         <footer className={styles.footer}>
-          <p>© 2024 Plataforma de Bioinformática - Desarrollado con React</p>
+          <p>© 2025 Plataforma de Bioinformática - Desarrollado con React</p>
         </footer>
       </div>
     </div>
