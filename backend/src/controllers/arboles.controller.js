@@ -4,7 +4,6 @@ import { handleSuccess, handleErrorClient, handleErrorServer } from '../handlers
 
 export async function generarArboles(req, res) {
     try {
-        // Validar datos de entrada
         const { error, value } = arbolesValidation.validate(req.body);
         
         if (error) {
@@ -13,10 +12,8 @@ export async function generarArboles(req, res) {
 
         const { matriz } = value;
 
-        // Ejecutar algoritmo Python
         const resultado = await ejecutarArbolesPython({ matriz });
 
-        // Enviar respuesta exitosa
         return handleSuccess(res, 200, 'Árboles generados correctamente', resultado);
 
     } catch (error) {

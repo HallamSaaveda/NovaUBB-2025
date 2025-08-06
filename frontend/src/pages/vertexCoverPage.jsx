@@ -71,7 +71,7 @@ const VertexCoverPage = ({ onBack }) => {
                     placeholder="Ej: A, B, C, D, E"
                     className={styles.input}
                   />
-                  <small className={styles.hint}>Ingresa los nodos separados por comas</small>
+                  <small className={styles.hint}>Ingresa los nodos separados por comas. Ej: A, B, C</small>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -84,7 +84,7 @@ const VertexCoverPage = ({ onBack }) => {
                     placeholder="Ej: [['A', 'B'], ['A', 'C']]"
                     className={styles.input}
                   />
-                  <small className={styles.hint}>Ingresa las aristas en formato de lista de tuplas</small>
+                  <small className={styles.hint}>Ingresa las aristas en formato de lista de tuplas. Ej: [[&#39;A&#39;, &#39;B&#39;], [&#39;A&#39;, &#39;C&#39;]]</small>
                 </div>
               </div>
 

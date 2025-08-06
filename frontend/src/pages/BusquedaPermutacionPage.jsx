@@ -23,13 +23,11 @@ const BusquedaPermutacionPage = ({ onBack }) => {
   }
 
   const parseSequenceInput = (input, tipo) => {
-    // Limpiar espacios y dividir por comas
     const elements = input
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item !== "")
 
-    // Convertir a números si es tipo numérico
     if (tipo === "numerico") {
       return elements.map((item) => {
         const num = Number.parseInt(item)
@@ -47,40 +45,33 @@ const BusquedaPermutacionPage = ({ onBack }) => {
     setResult(null)
 
     try {
-      // Validaciones básicas
       if (!formData.inicial.trim() || !formData.objetivo.trim()) {
         throw new Error("Las secuencias inicial y objetivo no pueden estar vacías")
       }
 
-      // Parsear las secuencias
       const inicialArray = parseSequenceInput(formData.inicial, formData.tipo)
       const objetivoArray = parseSequenceInput(formData.objetivo, formData.tipo)
 
-      // Validar que tengan la misma longitud
       if (inicialArray.length !== objetivoArray.length) {
         throw new Error("Las secuencias inicial y objetivo deben tener la misma longitud")
       }
 
-      // Validar longitud máxima
       if (inicialArray.length > 6) {
         throw new Error("Las secuencias no pueden tener más de 6 elementos para mejor rendimiento")
       }
 
-      // Validar que tengan los mismos elementos
       const inicialSorted = [...inicialArray].sort()
       const objetivoSorted = [...objetivoArray].sort()
       if (JSON.stringify(inicialSorted) !== JSON.stringify(objetivoSorted)) {
         throw new Error("Las secuencias deben contener los mismos elementos")
       }
 
-      // Preparar datos para enviar
       const dataToSend = {
         tipo: formData.tipo,
         inicial: inicialArray,
         objetivo: objetivoArray,
       }
 
-      // Solo incluir molécula si es tipo biológico
       if (formData.tipo === "biologico") {
         dataToSend.molecula = formData.molecula
       }

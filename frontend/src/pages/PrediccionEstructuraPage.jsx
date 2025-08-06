@@ -29,7 +29,6 @@ const PrediccionEstructuraPage = ({ onBack }) => {
     setResult(null);
 
     try {
-      // Validaciones básicas
       if (!formData.secuencia.trim()) {
         throw new Error("La secuencia no puede estar vacía");
       }
@@ -41,11 +40,10 @@ const PrediccionEstructuraPage = ({ onBack }) => {
           "La secuencia no puede tener más de 100 nucleótidos para mejor rendimiento"
         );
       }
-      if (formData.iteraciones < 1000 || formData.iteraciones > 400000) {
-        throw new Error("Las iteraciones deben estar entre 1,000 y 400,000");
+      if (formData.iteraciones < 1000 || formData.iteraciones > 500000) {
+        throw new Error("Las iteraciones deben estar entre 1,000 y 500,000");
       }
 
-      // Validar nucleótidos según el tipo
       const secuenciaUpper = formData.secuencia.toUpperCase();
       if (formData.tipo === "ARN") {
         if (!/^[AUCG]+$/.test(secuenciaUpper)) {
@@ -141,7 +139,6 @@ const PrediccionEstructuraPage = ({ onBack }) => {
     const sequence = result.secuencia.split("");
     const pairedPositions = new Set();
 
-    // Marcar posiciones que están emparejadas
     result.estructura.pares.forEach(([pos1, pos2]) => {
       pairedPositions.add(pos1);
       pairedPositions.add(pos2);
@@ -206,12 +203,12 @@ const PrediccionEstructuraPage = ({ onBack }) => {
                     value={formData.iteraciones}
                     onChange={handleInputChange}
                     min="1000"
-                    max="400000"
+                    max="500000"
                     step="1000"
                     className={styles.input}
                   />
                   <small className={styles.hint}>
-                    Número de iteraciones para el algoritmo (1,000 - 100,000)
+                    Número de iteraciones para el algoritmo (1,000 - 500,000)
                   </small>
                 </div>
               </div>

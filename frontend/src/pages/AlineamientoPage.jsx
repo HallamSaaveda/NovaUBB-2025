@@ -55,7 +55,6 @@ const AlineamientoPage = ({ onBack }) => {
     setShowTraceback(false);
 
     try {
-      // Validaciones básicas
       if (!formData.seq1.trim() || !formData.seq2.trim()) {
         throw new Error("Las secuencias no pueden estar vacías");
       }
@@ -421,7 +420,6 @@ const AlineamientoPage = ({ onBack }) => {
                       ))}
                     </div>
 
-                    {/* Matriz con headers de filas */}
                     {result.matrix_steps[currentStep]?.matrix.map(
                       (row, rowIndex) => (
                         <div key={rowIndex} className={styles.matrixRow}>

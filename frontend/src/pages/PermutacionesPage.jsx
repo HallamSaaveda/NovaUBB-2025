@@ -7,7 +7,7 @@ const PermutacionesPage = ({ onBack }) => {
   const [formData, setFormData] = useState({
     secuencia: "ABC",
     tipo: "texto",
-    molecula: "ADN", // Solo se usa cuando tipo es "biologico"
+    molecula: "ADN",
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,6 @@ const PermutacionesPage = ({ onBack }) => {
     setResult(null);
 
     try {
-      // Validación básica
       if (!formData.secuencia.trim()) {
         throw new Error("La secuencia no puede estar vacía");
       }
@@ -40,24 +39,21 @@ const PermutacionesPage = ({ onBack }) => {
         );
       }
 
-      // Preparar datos para enviar - AQUÍ ESTÁ LA CORRECCIÓN
       const dataToSend = {
         secuencia: formData.secuencia.trim(),
         tipo: formData.tipo,
       };
 
-      // Solo incluir molécula si es tipo biológico
       if (formData.tipo === "biologico") {
         dataToSend.molecula = formData.molecula;
       }
 
-      console.log("Datos enviados al backend:", dataToSend); // Para debug
+      console.log("Datos enviados al backend:", dataToSend);
 
       const response = await permutacionesService.generarPermutaciones(
         dataToSend
       );
       setResult(response.data);
-      // Resetear estados de visualización
       setShowAllBacktracking(false);
       setShowAllItertools(false);
     } catch (err) {

@@ -70,7 +70,7 @@ const ArbolesPage = ({ onBack }) => {
                   rows="4"
                 />
                 <small className={styles.hint}>
-                  Ingresa una matriz cuadrada simétrica con ceros en la diagonal. Formato: array de arrays JSON.
+                  Ingresa una matriz cuadrada simétrica con ceros en la diagonal. Ej: [[0, 2, 4], [2, 0, 5], [4, 5, 0]]
                 </small>
               </div>
 
