@@ -21,7 +21,16 @@ export const alignmentValidation = Joi.object({
     otherwise: Joi.string().pattern(soloARN).required()
       .messages({ 'string.pattern.base': 'seq2 solo puede tener A, C, G, U para ARN' })
   }),
-  match: Joi.number().required(),
-  mismatch: Joi.number().required(),
-  gap: Joi.number().required()
+  match: Joi.number().required().messages({
+    'number.base': 'Debes ingresar un número para match',
+    'number.required': 'match es obligatorio'
+  }),
+  mismatch: Joi.number().required().messages({
+    'number.base': 'Debes ingresar un número para mismatch',
+    'number.required': 'mismatch es obligatorio'
+  }),
+  gap: Joi.number().required().messages({
+    'number.base': 'Debes ingresar un número para gap',
+    'number.required': 'gap es obligatorio'
+  })
 });
