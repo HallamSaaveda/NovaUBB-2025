@@ -1,11 +1,11 @@
 const API_URL = "http://localhost:3000/api"
 
-class InvestigacionService {
-  async getInvestigaciones(params = {}) {
+class ProyectoTituloService {
+  async getProyectosTitulo(params = {}) {
     try {
       const token = localStorage.getItem("token")
       const queryParams = new URLSearchParams(params).toString()
-      const url = `${API_URL}/investigaciones${queryParams ? `?${queryParams}` : ""}`
+      const url = `${API_URL}/proyectos-titulo${queryParams ? `?${queryParams}` : ""}`
 
       const response = await fetch(url, {
         headers: {
@@ -16,7 +16,7 @@ class InvestigacionService {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al obtener investigaciones")
+        throw new Error(data.message || "Error al obtener proyectos de título")
       }
 
       return data
@@ -25,11 +25,11 @@ class InvestigacionService {
     }
   }
 
-  async getInvestigacion(id) {
+  async getProyectoTitulo(id) {
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${API_URL}/investigaciones/${id}`, {
+      const response = await fetch(`${API_URL}/proyectos-titulo/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,7 +38,7 @@ class InvestigacionService {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al obtener investigación")
+        throw new Error(data.message || "Error al obtener proyecto de título")
       }
 
       return data
@@ -47,22 +47,28 @@ class InvestigacionService {
     }
   }
 
-  async createInvestigacion(investigacionData, file) {
+  async createProyectoTitulo(proyectoData, file) {
     try {
       const token = localStorage.getItem("token")
       const formData = new FormData()
 
-      formData.append("titulo", investigacionData.titulo)
-      formData.append("autor", investigacionData.autor)
-      if (investigacionData.coAutor) formData.append("coAutor", investigacionData.coAutor)
-      formData.append("anio", investigacionData.anio)
-      formData.append("descripcion", investigacionData.descripcion)
+      formData.append("titulo", proyectoData.titulo)
+      formData.append("estudiante1", proyectoData.estudiante1)
+      if (proyectoData.estudiante2) formData.append("estudiante2", proyectoData.estudiante2)
+      formData.append("nivelAcademico", proyectoData.nivelAcademico)
+      formData.append("profesorGuia", proyectoData.profesorGuia)
+      if (proyectoData.profesorCoGuia) formData.append("profesorCoGuia", proyectoData.profesorCoGuia)
+      formData.append("carrera", proyectoData.carrera)
+      formData.append("anio", proyectoData.anio)
+      formData.append("semestre", proyectoData.semestre)
+      formData.append("resumen", proyectoData.resumen)
+      if (proyectoData.palabrasClave) formData.append("palabrasClave", proyectoData.palabrasClave)
 
       if (file) {
         formData.append("archivo", file)
       }
 
-      const response = await fetch(`${API_URL}/investigaciones`, {
+      const response = await fetch(`${API_URL}/proyectos-titulo`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -73,7 +79,7 @@ class InvestigacionService {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al crear investigación")
+        throw new Error(data.message || "Error al crear proyecto de título")
       }
 
       return data
@@ -82,11 +88,11 @@ class InvestigacionService {
     }
   }
 
-  async updateInvestigacion(id, updateData) {
+  async updateProyectoTitulo(id, updateData) {
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${API_URL}/investigaciones/${id}`, {
+      const response = await fetch(`${API_URL}/proyectos-titulo/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +104,7 @@ class InvestigacionService {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al actualizar investigación")
+        throw new Error(data.message || "Error al actualizar proyecto de título")
       }
 
       return data
@@ -107,11 +113,11 @@ class InvestigacionService {
     }
   }
 
-  async deleteInvestigacion(id) {
+  async deleteProyectoTitulo(id) {
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${API_URL}/investigaciones/${id}`, {
+      const response = await fetch(`${API_URL}/proyectos-titulo/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -121,7 +127,7 @@ class InvestigacionService {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al eliminar investigación")
+        throw new Error(data.message || "Error al eliminar proyecto de título")
       }
 
       return data
@@ -134,7 +140,7 @@ class InvestigacionService {
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${API_URL}/investigaciones/${id}/download`, {
+      const response = await fetch(`${API_URL}/proyectos-titulo/${id}/download`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -162,12 +168,12 @@ class InvestigacionService {
     }
   }
 
-  // función para obtener PDF como blob para react-pdf
+  // Función para obtener PDF como blob para react-pdf
   async getPdfBlob(id) {
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${API_URL}/investigaciones/${id}/download`, {
+      const response = await fetch(`${API_URL}/proyectos-titulo/${id}/download`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -186,14 +192,13 @@ class InvestigacionService {
     }
   }
 
-  // Función para obtener URL del PDF
+  // Función para obtener URL del PDF para visualización
   getPdfViewUrl(id) {
     const token = localStorage.getItem("token")
-    // Crear una función que devuelva una promesa con el blob
     return this.getPdfBlob(id).then((blob) => {
       return URL.createObjectURL(blob)
     })
   }
 }
 
-export default new InvestigacionService()
+export default new ProyectoTituloService()

@@ -19,7 +19,7 @@ const Navigation = () => {
               </Link>
             </li>
 
-            {user.role === "profesor" && (
+            {["profesor", "alumno"].includes(user.role) && (
               <>
                 <li>
                   <Link to="/investigaciones" className="nav-link">

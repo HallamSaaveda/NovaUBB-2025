@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
@@ -15,6 +13,8 @@ import PersonalArea from "./pages/PersonalArea.jsx"
 import Investigaciones from "./pages/Investigaciones.jsx"
 import InvestigacionDetalle from "./pages/InvestigacionDetalle.jsx"
 import AlgoritmosPage from "./pages/algoritmosPage.jsx"
+import ProyectosTitulo from "./pages/proyectosTitulo.jsx"
+import ProyectoTituloDetalle from "./components/proyectosTituloDetail.jsx"
 import "./styles/global.css"
 
 function ProtectedRoute({ children }) {
@@ -121,6 +121,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <AlgoritmosPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/proyectos-titulo"
+                element={
+                  <ProtectedRoute>
+                    <ProyectosTitulo />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/proyectos-titulo/:id"
+                element={
+                  <ProtectedRoute>
+                    <ProyectoTituloDetalle />
                   </ProtectedRoute>
                 }
               />

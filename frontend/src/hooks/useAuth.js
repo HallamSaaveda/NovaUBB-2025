@@ -1,6 +1,3 @@
-"use client"
-
-// ✅ Hook de auth sin dependencia circular
 import { useState, useEffect } from "react"
 import authService from "../services/authService"
 

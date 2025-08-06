@@ -18,7 +18,7 @@ router.use(authenticateJWT)
 router.post("/", upload.single("archivo"), handleFileSizeLimit, createInvestigacion)
 router.get("/", getInvestigaciones)
 router.get("/:id", getInvestigacion)
-router.get("/:id/download", downloadArchivoInvestigacion) // ✅ Nueva ruta
+router.get("/:id/download", downloadArchivoInvestigacion) 
 router.patch("/:id", updateInvestigacion)
 router.delete("/:id", deleteInvestigacion)
 

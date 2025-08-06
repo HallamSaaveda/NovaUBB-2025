@@ -16,10 +16,16 @@ const Home = () => {
             onClick: () => navigate("/investigaciones"),
           },
           {
-            title: "Mi Perfil",
-            description: "Gestiona tu información personal y configuración de cuenta.",
-            icon: "👤",
-            onClick: () => navigate("/profile"),
+            title: "Proyectos de Título",
+            description: "Consulta proyectos de título y trabajos de graduación para inspirarte en tu propio trabajo.",
+            icon: "🎓",
+            onClick: () => navigate("/proyectos-titulo"),
+          },
+          {
+            title: "Aplicaciones",
+            description: "Software creado por estudiantes para las lecciones de bioinformática",
+            icon: "📈",
+            onClick: () => navigate("/algoritmos"),
           },
         ]
 
@@ -30,6 +36,12 @@ const Home = () => {
             description: "Gestiona tus proyectos de bioinformática, algoritmos y análisis de datos biológicos.",
             icon: "🔬",
             onClick: () => navigate("/investigaciones"),
+          },
+          {
+            title: "Proyectos de Título",
+            description: "Supervisa y gestiona proyectos de título de tus estudiantes.",
+            icon: "🎓",
+            onClick: () => navigate("/proyectos-titulo"),
           },
           {
             title: "Área Personal",
@@ -61,6 +73,12 @@ const Home = () => {
             onClick: () => navigate("/investigaciones"),
           },
           {
+            title: "Proyectos de Título",
+            description: "Administra todos los proyectos de título del sistema.",
+            icon: "🎓",
+            onClick: () => navigate("/proyectos-titulo"),
+          },
+          {
             title: "Área Personal",
             description: "Espacio privado para archivos y documentos administrativos.",
             icon: "📁",
@@ -85,9 +103,9 @@ const Home = () => {
         <h1 className="home-title">Bienvenido, {user?.name}</h1>
         <p className="home-subtitle">
           {user?.role === "alumno"
-            ? "Explora el mundo de la bioinformática y las investigaciones académicas"
+            ? "Explora el mundo de la bioinformática, investigaciones académicas y proyectos de título"
             : user?.role === "profesor"
-              ? "Gestiona tus investigaciones y recursos académicos"
+              ? "Gestiona tus investigaciones, proyectos de título y recursos académicos"
               : "Administra el sistema y supervisa las actividades académicas"}
         </p>
       </div>
@@ -147,8 +165,8 @@ const Home = () => {
               }}
             >
               <p style={{ margin: 0, color: "#1565c0", fontSize: "14px" }}>
-                💡 <strong>Tip:</strong> Como estudiante, puedes explorar todas las investigaciones disponibles y
-                descargar los archivos para tu aprendizaje académico.
+                💡 <strong>Tip:</strong> Como estudiante, puedes explorar todas las investigaciones y proyectos de título disponibles, 
+                descargar archivos y visualizar PDFs para tu aprendizaje académico.
               </p>
             </div>
           )}

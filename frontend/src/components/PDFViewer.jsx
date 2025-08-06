@@ -1,178 +1,159 @@
-"use client"
+import { useState, useEffect } from "react"
+import proyectoTituloService from "../services/proyectoTituloService"
 
-import { useState } from "react"
-import { Document, Page } from 'react-pdf';
-import 'pdfjs-dist/web/pdf_viewer.css';
-
-
-// Configurar worker de PDF.js
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`
-
-const PDFViewer = ({ pdfUrl, fileName }) => {
-  const [numPages, setNumPages] = useState(null)
-  const [pageNumber, setPageNumber] = useState(1)
+const PdfViewer = ({ proyectoId, fileName, onClose }) => {
+  const [pdfUrl, setPdfUrl] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [scale, setScale] = useState(1.0)
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages)
-    setLoading(false)
-    setError(null)
-  }
+  useEffect(() => {
+    loadPdf()
+    return () => {
+      // Limpiar URL del blob al desmontar
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl)
+      }
+    }
+  }, [proyectoId])
 
-  const onDocumentLoadError = (error) => {
-    console.error("Error loading PDF:", error)
-    setError("Error al cargar el PDF. Intenta descargarlo en su lugar.")
-    setLoading(false)
-  }
-
-  const goToPrevPage = () => {
-    setPageNumber((prev) => Math.max(prev - 1, 1))
-  }
-
-  const goToNextPage = () => {
-    setPageNumber((prev) => Math.min(prev + 1, numPages))
-  }
-
-  const zoomIn = () => {
-    setScale((prev) => Math.min(prev + 0.2, 2.0))
-  }
-
-  const zoomOut = () => {
-    setScale((prev) => Math.max(prev - 0.2, 0.5))
-  }
-
-  const resetZoom = () => {
-    setScale(1.0)
-  }
-
-  if (loading) {
-    return (
-      <div style={{ textAlign: "center", padding: "48px" }}>
-        <div className="loading">Cargando PDF...</div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div
-        style={{
-          textAlign: "center",
-          padding: "48px",
-          backgroundColor: "#f8d7da",
-          color: "#721c24",
-          borderRadius: "8px",
-          border: "1px solid #f5c6cb",
-        }}
-      >
-        <h3>⚠️ Error al cargar PDF</h3>
-        <p>{error}</p>
-      </div>
-    )
+  const loadPdf = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const url = await proyectoTituloService.getPdfViewUrl(proyectoId)
+      setPdfUrl(url)
+    } catch (err) {
+      setError("Error al cargar el PDF: " + err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div>
-      {/* Controles */}
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 1000,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "40px",
+      }}
+      onClick={onClose} // Cerrar al hacer clic en el fondo
+    >
       <div
         style={{
+          width: "90%",
+          maxWidth: "1000px",
+          height: "85%",
+          backgroundColor: "white",
+          borderRadius: "12px",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "16px",
-          padding: "12px",
-          backgroundColor: "#f8f9fa",
-          borderRadius: "8px",
-          border: "1px solid var(--border-color)",
-          flexWrap: "wrap",
-          gap: "12px",
+          flexDirection: "column",
+          overflow: "hidden",
         }}
+        onClick={(e) => e.stopPropagation()} // Evitar cerrar al hacer clic en el modal
       >
-        {/* Navegación de páginas */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        {/* Header con título y botón cerrar */}
+        <div
+          style={{
+            padding: "20px",
+            borderBottom: "1px solid #e0e0e0",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "#f8f9fa",
+            borderRadius: "12px 12px 0 0",
+          }}
+        >
+          <h3 style={{ margin: 0, color: "var(--primary-color)", fontSize: "18px" }}>
+            📄 {fileName}
+          </h3>
+          
           <button
-            className="btn btn-secondary"
-            onClick={goToPrevPage}
-            disabled={pageNumber <= 1}
-            style={{ padding: "6px 12px", fontSize: "14px" }}
-          >
-            ← Anterior
-          </button>
-          <span style={{ padding: "0 12px", fontSize: "14px", fontWeight: "500" }}>
-            Página {pageNumber} de {numPages}
-          </span>
-          <button
-            className="btn btn-secondary"
-            onClick={goToNextPage}
-            disabled={pageNumber >= numPages}
-            style={{ padding: "6px 12px", fontSize: "14px" }}
-          >
-            Siguiente →
-          </button>
-        </div>
-
-        {/* Controles de zoom */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <button
-            className="btn btn-secondary"
-            onClick={zoomOut}
-            disabled={scale <= 0.5}
-            style={{ padding: "6px 12px", fontSize: "14px" }}
-          >
-            🔍-
-          </button>
-          <span style={{ padding: "0 8px", fontSize: "14px", fontWeight: "500" }}>{Math.round(scale * 100)}%</span>
-          <button
-            className="btn btn-secondary"
-            onClick={zoomIn}
-            disabled={scale >= 2.0}
-            style={{ padding: "6px 12px", fontSize: "14px" }}
-          >
-            🔍+
-          </button>
-          <button className="btn btn-secondary" onClick={resetZoom} style={{ padding: "6px 12px", fontSize: "14px" }}>
-            Reset
-          </button>
-        </div>
-      </div>
-
-      {/* Visor de PDF */}
-      <div
-        style={{
-          border: "1px solid var(--border-color)",
-          borderRadius: "8px",
-          overflow: "auto",
-          maxHeight: "800px",
-          backgroundColor: "#f5f5f5",
-          display: "flex",
-          justifyContent: "center",
-          padding: "20px",
-        }}
-      >
-        <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError}>
-          <Page
-            pageNumber={pageNumber}
-            scale={scale}
-            renderTextLayer={true}
-            renderAnnotationLayer={true}
+            onClick={onClose}
             style={{
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              backgroundColor: "white",
+              backgroundColor: "transparent",
+              border: "none",
+              fontSize: "24px",
+              cursor: "pointer",
+              color: "#666",
+              padding: "5px 10px",
+              borderRadius: "50%",
+              transition: "all 0.2s ease",
             }}
-          />
-        </Document>
-      </div>
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#f0f0f0"
+              e.target.style.color = "#333"
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "transparent"
+              e.target.style.color = "#666"
+            }}
+          >
+            ✕
+          </button>
+        </div>
 
-      {/* Información del archivo */}
-      <div style={{ marginTop: "12px", textAlign: "center" }}>
-        <small style={{ color: "var(--text-light)" }}>
-          📄 {fileName} • {numPages} página{numPages !== 1 ? "s" : ""}
-        </small>
+        {/* Contenido del PDF */}
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          {loading && (
+            <div style={{ textAlign: "center", color: "var(--text-dark)" }}>
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>📄</div>
+              <div>Cargando PDF...</div>
+            </div>
+          )}
+
+          {error && (
+            <div style={{ textAlign: "center", color: "#dc3545", maxWidth: "400px", padding: "20px" }}>
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>❌</div>
+              <div style={{ marginBottom: "16px" }}>{error}</div>
+              <button 
+                className="btn btn-primary" 
+                onClick={loadPdf}
+                style={{ marginTop: "16px" }}
+              >
+                Reintentar
+              </button>
+            </div>
+          )}
+
+          {pdfUrl && !loading && !error && (
+            <iframe
+              src={pdfUrl}
+              width="100%"
+              height="100%"
+              title="PDF Viewer"
+              style={{
+                border: "none",
+              }}
+              onLoad={() => {
+                console.log("PDF loaded successfully")
+              }}
+              onError={(e) => {
+                console.error("Error loading PDF in iframe:", e)
+                setError("Error al mostrar el PDF en el navegador")
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
-export default PDFViewer
+export default PdfViewer
