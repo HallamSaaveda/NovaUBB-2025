@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { predecirEstructuraService } from "../services/prediccionEstructura.service";
 import styles from "../styles/prediccion-estructura-page.module.css";
@@ -166,7 +165,7 @@ const PrediccionEstructuraPage = ({ onBack }) => {
           )}
           <div className={styles.titleSection}>
             <h1 className={styles.title}>
-              <span className={styles.icon}>🧬</span>
+              <span className={styles.icon}>🏗️</span>
               Predicción de Estructura Secundaria
             </h1>
             <p className={styles.description}>
