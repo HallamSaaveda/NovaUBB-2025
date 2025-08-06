@@ -6,6 +6,7 @@ import ArbolesPage from "../../pages/ArbolesPage"
 import PermutacionesPage from "../../pages/PermutacionesPage"
 import BusquedaPermutacionPage from "../../pages/BusquedaPermutacionPage"
 import AlineamientoPage from "../../pages/AlineamientoPage"
+import PrediccionEstructuraPage from "../../pages/PrediccionEstructuraPage"
 
 const AlgorithmComponents = {
   alineamiento: () => (<AlineamientoPage />),
@@ -13,20 +14,7 @@ const AlgorithmComponents = {
   "busqueda-permutacion": () => <BusquedaPermutacionPage />,
   "vertex-cover": () => <VertexCoverPage />,
   arboles: () => <ArbolesPage />,
-  estructura: () => (
-    <div className={styles.algorithmContent}>
-      <h3>Predicción de Estructura</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tortor risus. Vestibulum ac diam sit amet
-        quam vehicula elementum sed sit amet dui.
-      </p>
-      <div className={styles.inputSection}>
-        <label>Secuencia de proteína:</label>
-        <input type="text" placeholder="MKTVRQERLK..." />
-        <button className={styles.executeBtn}>Predecir Estructura</button>
-      </div>
-    </div>
-  ),
+  estructura: () => <PrediccionEstructuraPage />,
 }
 
 export default function AlgorithmWorkspace({ algorithm, algorithms, onAlgorithmChange, onBackToHome }) {

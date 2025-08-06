@@ -1,0 +1,863 @@
+.container {
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 2rem;
+}
+
+.backButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.titleSection {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 3rem;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.formSection {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.input,
+.select,
+.textarea {
+  padding: 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.textarea {
+  resize: vertical;
+  font-family: "Courier New", monospace;
+  line-height: 1.4;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.hint {
+  color: #6b7280;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.submitButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.resultsSection {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.resultsTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2rem;
+}
+
+.summarySection {
+  margin-bottom: 2rem;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.summaryCard {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.summaryCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summaryIcon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e2e8f0;
+}
+
+.summaryContent {
+  flex: 1;
+}
+
+.summaryLabel {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.summaryValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: "Courier New", monospace;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.sequenceVisualization {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.sequenceContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.nucleotideBox {
+  width: 50px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nucleotideBox:hover {
+  transform: scale(1.05);
+}
+
+.paired {
+  background: #dcfce7;
+  border-color: #10b981;
+  color: #059669;
+}
+
+.unpaired {
+  background: #fef2f2;
+  border-color: #f87171;
+  color: #dc2626;
+}
+
+.nucleotideLabel {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+}
+
+.positionLabel {
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.sequenceLegend {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.legendBox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 2px solid;
+}
+
+.pairsSection {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.pairsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.pairsLegend {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.legendTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.legendGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.legendPair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.legendBases {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendBase {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  border: 2px solid;
+}
+
+.legendConnector {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6b7280;
+  letter-spacing: 1px;
+}
+
+.legendInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.legendType {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.legendStrength {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.pairsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.pairCard {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+  position: relative; /* Añadir esta línea */
+  cursor: pointer; /* Añadir esta línea */
+}
+
+.pairCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pairHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pairNumber {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.pairPositions {
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.pairVisualization {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.baseBox {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  border: 2px solid currentColor;
+}
+
+.pairConnector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 1rem;
+}
+
+.connectorLine {
+  width: 40px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+.connectorDots {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.pairInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pairType {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.pairStrength {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.energyTooltip {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tooltipContent {
+  background: #1e293b;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 160px;
+  text-align: center;
+}
+
+.tooltipTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #cbd5e1;
+}
+
+.tooltipEnergy {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.5rem;
+  font-family: "Courier New", monospace;
+}
+
+.tooltipDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+}
+
+.tooltipArrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #1e293b;
+}
+
+.analysisSection {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.analysisGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.analysisCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.analysisTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.compositionStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.compositionItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.compositionColor {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+
+.compositionLabel {
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  color: #374151;
+}
+
+.compositionValue {
+  font-weight: 700;
+  color: #1e293b;
+  margin-left: auto;
+}
+
+.statsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.statItem:last-child {
+  border-bottom: none;
+}
+
+.statLabel {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.statValue {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.stable {
+  color: #059669 !important;
+}
+
+.unstable {
+  color: #dc2626 !important;
+}
+
+.algorithmExplanation {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.explanationContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.explanationItem {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.explanationTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+.explanationText {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Animaciones para los pares */
+@keyframes pairPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pairCard:hover .baseBox {
+  animation: pairPulse 1s ease-in-out infinite;
+}
+
+/* Scrollbar personalizado */
+.sequenceContainer::-webkit-scrollbar {
+  height: 6px;
+}
+
+.sequenceContainer::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.sequenceContainer::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.sequenceContainer::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pairsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .analysisGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sequenceContainer {
+    justify-content: center;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .header {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nucleotideBox {
+    width: 40px;
+    height: 50px;
+  }
+
+  .nucleotideLabel {
+    font-size: 1rem;
+  }
+
+  .positionLabel {
+    font-size: 0.6rem;
+  }
+
+  .baseBox {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .pairVisualization {
+    gap: 0.25rem;
+  }
+
+  .connectorLine {
+    width: 30px;
+  }
+
+  .explanationContent {
+    gap: 1rem;
+  }
+
+  .explanationItem {
+    padding: 1rem;
+  }
+}
+
+/* Efectos especiales para diferentes tipos de pares */
+.pairCard[style*="border-color: #ef4444"] .baseBox {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.pairCard[style*="border-color: #3b82f6"] .baseBox {
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.pairCard[style*="border-color: #f59e0b"] .baseBox {
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+@media (max-width: 768px) {
+  .legendGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pairsHeader {
+    gap: 1rem;
+  }
+
+  .tooltipContent {
+    min-width: 140px;
+    padding: 0.5rem;
+  }
+
+  .tooltipEnergy {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .legendPair {
+    padding: 0.5rem;
+  }
+
+  .legendBase {
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
+  }
+
+  .energyTooltip {
+    top: -100px;
+  }
+
+  .tooltipContent {
+    min-width: 120px;
+    padding: 0.4rem;
+  }
+
+  .tooltipTitle {
+    font-size: 0.7rem;
+  }
+
+  .tooltipEnergy {
+    font-size: 0.9rem;
+  }
+
+  .tooltipDetails {
+    font-size: 0.7rem;
+  }
+}
