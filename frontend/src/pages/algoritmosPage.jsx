@@ -179,7 +179,7 @@ export default function AlgoritmosPage() {
         </main>
 
         <footer className={styles.footer}>
-          <p>© 2024 Plataforma de Bioinformática - Desarrollado con React</p>
+          <p>© 2025 Plataforma de Bioinformática - Desarrollado con React</p>
         </footer>
       </div>
     </div>
