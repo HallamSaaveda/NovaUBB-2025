@@ -64,7 +64,7 @@ const algorithms = [
     id: 6,
     key: "estructura",
     title: "Predicción de Estructura",
-    description: "Predice la estructura secundaria de proteínas usando algoritmos de machine learning.",
+    description: "Predice la estructura secundaria de proteínas usando el algoritmo montecarlo.",
     category: "Estructura",
     difficulty: "Avanzado",
     icon: "🏗️",
