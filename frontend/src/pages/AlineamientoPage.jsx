@@ -251,9 +251,10 @@ const AlineamientoPage = ({ onBack }) => {
                     value={formData.match}
                     onChange={handleInputChange}
                     className={styles.input}
+                    min={0}
                   />
                   <small className={styles.hint}>
-                    Puntuación por coincidencia
+                    Puntuación por coincidencia. 
                   </small>
                 </div>
 
@@ -267,7 +268,7 @@ const AlineamientoPage = ({ onBack }) => {
                     className={styles.input}
                   />
                   <small className={styles.hint}>
-                    Penalización por no coincidencia
+                    Penalización por no coincidencia. (Utiliza las flechas para ajustar un valor negativo)
                   </small>
                 </div>
 
@@ -281,7 +282,7 @@ const AlineamientoPage = ({ onBack }) => {
                     className={styles.input}
                   />
                   <small className={styles.hint}>
-                    Penalización por hueco (gap)
+                    Penalización por hueco (gap). (Utiliza las flechas para ajustar un valor negativo)
                   </small>
                 </div>
               </div>

@@ -23,7 +23,9 @@ export const alignmentValidation = Joi.object({
   }),
   match: Joi.number().required().messages({
     'number.base': 'Debes ingresar un número para match',
-    'number.required': 'match es obligatorio'
+    'number.required': 'match es obligatorio',
+    'number.positive': 'Debes ingresar un valor positivo para match'
+    
   }),
   mismatch: Joi.number().required().messages({
     'number.base': 'Debes ingresar un número para mismatch',
