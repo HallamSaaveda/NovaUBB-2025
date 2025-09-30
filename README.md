@@ -121,5 +121,3 @@ Este proyecto está bajo la licencia MIT.
 - Felipe Miranda Rebolledo
 - Hallam Saavedra Álvarez
 - Juan Yañez Romero
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/HallamSaaveda/NovaUBB-2025)
