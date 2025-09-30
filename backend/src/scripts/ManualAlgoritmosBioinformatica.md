@@ -7,26 +7,32 @@ El backend de NovaUBB utiliza una arquitectura en capas con Express.js que integ
 ## Algoritmos de Bioinformática Disponibles
 ### - Permutaciones
 **Funcionalidad:** Genera todas las permutaciones posibles de una secuencia utilizando dos enfoques: backtracking personalizado y la librería itertools. Ambos métodos miden tiempo de ejecución y cantidad total de permutaciones.
+
 **Archivo**: ``algoritmo_permutaciones.py``
 
 ### - Alineamiento
 **Funcionalidad:** Implementa los algoritmos de alineamiento global (Needleman-Wunsch) y local (Smith-Waterman) entre dos secuencias biológicas, devolviendo la matriz de puntuación paso a paso y el alineamiento final.
+
 **Archivo**: ``algoritmo_alineamiento.py``
 
 ### - Buscar permutación
 **Funcionalidad:** Realiza una búsqueda exhaustiva (brute-force) de una permutación objetivo a partir de una secuencia inicial, retornando el número de pasos y la traza del proceso. Limitado a secuencias de hasta 6 elementos.
+
 **Archivo**: ``algoritmo_busqueda_permutaciones.py``
 
 ### - Vertex Cover
 **Funcionalidad:** Calcula el conjunto de vértices de cobertura mínima (vertex cover) de un grafo, utilizando tanto una estrategia exacta (fuerza bruta) como una heurística greedy.
+
 **Archivo**: ``algoritmo_vertex_cover.py``
 
 ### - Arboles
 **Funcionalidad:** Construye árboles jerárquicos a partir de matrices de distancias, generando dos representaciones: ultramétrica (clustering promedio) y aditiva (distancia mínima). Ambas representaciones se entregan como imágenes base64.
+
 **Archivo**: ``algoritmo_arboles.py``
 
 ### - Predicción estructura
 **Funcionalidad:** Predice pares de bases en estructuras secundarias de secuencias de ADN o ARN usando un enfoque Monte Carlo basado en energía de emparejamiento. Devuelve la estructura con menor energía encontrada y estadísticas del proceso.
+
 **Archivo**: ``algoritmo_predicción_estructura.py``
 
 ## Flujo de Procesamiento
@@ -87,4 +93,5 @@ Los algoritmos requieren las siguientes dependencias Python para su funcionamien
 - **networkx**: Manipulación y análisis de grafos
 - **matplotlib**: Generación de visualizaciones
 - **numpy**: Operaciones matemáticas y matriciales
+
 - **scipy**: Algoritmos científicos avanzados
