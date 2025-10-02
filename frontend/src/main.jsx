@@ -15,11 +15,12 @@ import InvestigacionDetalle from "./pages/InvestigacionDetalle.jsx"
 import AlgoritmosPage from "./pages/algoritmosPage.jsx"
 import ProyectosTitulo from "./pages/proyectosTitulo.jsx"
 import ProyectoTituloDetalle from "./components/proyectosTituloDetail.jsx"
+import Grupos from "./pages/Grupos.jsx"
+import GrupoDetalle from "./components/GrupoDetalle.jsx"
 import "./styles/global.css"
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
-
   if (loading) return <div className="loading">Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
   return children
@@ -27,7 +28,6 @@ function ProtectedRoute({ children }) {
 
 function AdminRoute({ children }) {
   const { user, loading } = useAuth()
-
   if (loading) return <div className="loading">Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
   if (!["admin", "superadmin"].includes(user.role)) return <Navigate to="/" replace />
@@ -36,7 +36,6 @@ function AdminRoute({ children }) {
 
 function ProfessorRoute({ children }) {
   const { user, loading } = useAuth()
-
   if (loading) return <div className="loading">Cargando...</div>
   if (!user) return <Navigate to="/login" replace />
   if (!["profesor", "admin", "superadmin"].includes(user.role)) return <Navigate to="/" replace />
@@ -45,7 +44,6 @@ function ProfessorRoute({ children }) {
 
 function PublicRoute({ children }) {
   const { user, loading } = useAuth()
-
   if (loading) return <div className="loading">Cargando...</div>
   if (user) return <Navigate to="/" replace />
   return children
@@ -140,6 +138,11 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* Grupos: accesible para todos (sin ProtectedRoute) */}
+              <Route path="/grupos" element={<Grupos />} />
+              <Route path="/grupos/:slug" element={<GrupoDetalle />} />
+
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
